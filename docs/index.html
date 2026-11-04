@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Intelligence UI for DeepSeek Harness</title>
+    <meta
+      name="description"
+      content="A DeepSeek Harness plugin that renders assistant replies as adaptive, interactive interfaces: OpenUI fences, automatic Markdown compilation, 44 theme-native components."
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #ffffff;
+        --fg: #17181b;
+        --muted: #5b616b;
+        --line: #e6e9ef;
+        --accent: #3768d8;
+        --card: #f6f7f9;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141517;
+          --fg: #f2f4f7;
+          --muted: #aab2bf;
+          --line: #2c2f34;
+          --accent: #8fb6ff;
+          --card: #202225;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          15px/1.6 -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          'PingFang SC',
+          'Microsoft YaHei',
+          sans-serif;
+      }
+      main {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 48px 24px 64px;
+      }
+      h1 {
+        font-size: 30px;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        margin: 0 0 12px;
+      }
+      p.lede {
+        color: var(--muted);
+        margin: 0 0 28px;
+        max-width: 640px;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 32px;
+      }
+      nav a {
+        color: var(--fg);
+        text-decoration: none;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 13px;
+      }
+      nav a:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      img.hero {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--card);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 32px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 18px 20px;
+        background: var(--card);
+      }
+      .card h2 {
+        font-size: 15px;
+        margin: 0 0 6px;
+      }
+      .card p {
+        margin: 0;
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+      .card a {
+        color: var(--accent);
+      }
+      footer {
+        margin-top: 48px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        font-size: 13px;
+        color: var(--muted);
+      }
+      footer a {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Intelligence UI for DeepSeek Harness</h1>
+      <p class="lede">
+        Chat replies that render as interfaces, not walls of Markdown. Native OpenUI fences become
+        cards, tables, charts and diagrams; structured Markdown is compiled into the same visual
+        language; plain text stays plain text.
+      </p>
+      <nav>
+        <a href="https://github.com/MarkYangKp/dsh-intelligence-ui">GitHub repository</a>
+        <a href="gallery.html">Full gallery</a>
+        <a href="https://github.com/MarkYangKp/dsh-intelligence-ui/blob/main/docs/COMPONENTS.md"
+          >Components</a
+        >
+        <a href="https://github.com/MarkYangKp/dsh-intelligence-ui/blob/main/docs/ARCHITECTURE.md"
+          >Architecture</a
+        >
+        <a href="https://github.com/MarkYangKp/dsh-intelligence-ui/releases">Releases</a>
+      </nav>
+      <img
+        class="hero"
+        src="hero.png"
+        alt="Intelligence UI rendering a weekly review with metric cards, a chart and a table"
+      />
+      <div class="grid">
+        <div class="card">
+          <h2>Install</h2>
+          <p>
+            Clone the repository and install its directory as a plugin bundle in DeepSeek Harness.
+            See the
+            <a href="https://github.com/MarkYangKp/dsh-intelligence-ui#quickstart">quickstart</a>.
+          </p>
+        </div>
+        <div class="card">
+          <h2>44 components</h2>
+          <p>
+            Metrics, tables, timelines, steps, charts, a schematic map, code/diff/file panels, trees
+            and interactive controls — all theme-native and light/dark aware.
+          </p>
+        </div>
+        <div class="card">
+          <h2>Safe by construction</h2>
+          <p>
+            A bad program never breaks the message; invalid input degrades to a local notice or
+            plain text. No analytics, no telemetry, no network requests.
+          </p>
+        </div>
+      </div>
+      <footer>
+        MIT licensed ·
+        <a href="https://github.com/MarkYangKp/dsh-intelligence-ui"
+          >MarkYangKp/dsh-intelligence-ui</a
+        >
+      </footer>
+    </main>
+  </body>
+</html>
