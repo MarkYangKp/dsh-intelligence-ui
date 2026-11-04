@@ -168,13 +168,16 @@ async function launch({ profile, args = [] }) {
       else request.resolve(response.result)
     }
   })
+  // Cold-started Chrome on shared CI runners can take longer than 15s to answer
+  // the first CDP command; the timeout is configurable and generous by default.
+  const cdpTimeout = Number(process.env.IUI_CDP_TIMEOUT || 30000)
   const send = (method, params = {}, sessionId) =>
     new Promise((resolve, reject) => {
       const id = ++serial
       const timer = setTimeout(() => {
         pending.delete(id)
         reject(new Error('Chrome timeout: ' + method))
-      }, 15000)
+      }, cdpTimeout)
       pending.set(id, { resolve, reject, timer })
       chrome.stdio[3].write(JSON.stringify({ id, method, params, sessionId }) + '\0')
     })
@@ -189,7 +192,21 @@ async function launch({ profile, args = [] }) {
   return { send, close }
 }
 
-export async function runChromeFrames({ url, profile, ready, args = [] }) {
+export async function runChromeFrames(options) {
+  let lastError
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      return await framesOnce(options)
+    } catch (error) {
+      lastError = error
+      if (attempt === 0)
+        console.log('ℹ Chrome frame extraction failed, retrying once:', error.message)
+    }
+  }
+  throw lastError
+}
+
+async function framesOnce({ url, profile, ready, args = [] }) {
   // A real frame clock is required for ResizeObserver. Virtual-time dump-dom can
   // exhaust its timer budget before any resize/rendering frame is delivered.
   const { send, close } = await launch({ profile, args })
@@ -228,7 +245,20 @@ export async function runChromeFrames({ url, profile, ready, args = [] }) {
  * Sets an explicit viewport width so media queries and container measurements are
  * deterministic, waits for fonts + two frames, then captures beyond the viewport.
  */
-export async function capturePage({
+export async function capturePage(options) {
+  let lastError
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      return await capturePageOnce(options)
+    } catch (error) {
+      lastError = error
+      if (attempt === 0) console.log('ℹ Chrome screenshot failed, retrying once:', error.message)
+    }
+  }
+  throw lastError
+}
+
+async function capturePageOnce({
   url,
   out,
   width = 920,
