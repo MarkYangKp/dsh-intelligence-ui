@@ -14,7 +14,7 @@ visual language. Plain text stays plain text.
 
 ![Intelligence UI preview](docs/hero.png)
 
-[中文说明](README.zh-CN.md) · [Docs index](docs/README.md) · [Component reference](docs/COMPONENTS.md) · [Design system](docs/design.md) · [Architecture](docs/ARCHITECTURE.md) · [Gallery (GitHub Pages)](https://MarkYangKp.github.io/dsh-intelligence-ui/gallery.html) · [Light](docs/gallery.png) / [dark](docs/gallery-dark.png) / [mobile](docs/gallery-mobile.png)
+[中文说明](README.zh-CN.md) · [Docs index](docs/README.md) · [Component reference](docs/COMPONENTS.md) · [Design system](docs/design.md) · [Architecture](docs/ARCHITECTURE.md) · [Gallery (GitHub Pages)](https://markyangkp.github.io/dsh-intelligence-ui/gallery.html) · [Light](docs/gallery.png) / [dark](docs/gallery-dark.png) / [mobile](docs/gallery-mobile.png)
 
 **Status:** v1.1.0 · 44 components · MIT · light/dark themes · 390/920px · macOS tested locally, Linux covered by CI.
 
@@ -273,7 +273,7 @@ minimal and language-neutral; number and date formatting comes from the content.
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)                                  | Reply pipeline, module map, robustness, prompt architecture, test matrix |
 | [docs/design.md](docs/design.md)                                              | Design-system v3 tokens, type scale, per-component visual guidance       |
 | [docs/README.md](docs/README.md)                                              | Documentation index                                                      |
-| [Gallery page](https://MarkYangKp.github.io/dsh-intelligence-ui/gallery.html) | Full rendered gallery (generated; served by GitHub Pages)                |
+| [Gallery page](https://markyangkp.github.io/dsh-intelligence-ui/gallery.html) | Full rendered gallery (generated; served by GitHub Pages)                |
 
 ## Contributing
 

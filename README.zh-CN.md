@@ -13,7 +13,7 @@ DeepSeek Harness（DSH）插件：接管助手消息渲染——模型写的
 
 ![Intelligence UI 效果](docs/hero.png)
 
-[English](README.md) · [文档索引](docs/README.md) · [组件参考](docs/COMPONENTS.md) · [设计系统](docs/design.md) · [架构说明](docs/ARCHITECTURE.md) · [画廊（GitHub Pages）](https://MarkYangKp.github.io/dsh-intelligence-ui/gallery.html) · [亮色](docs/gallery.png) / [暗色](docs/gallery-dark.png) / [窄屏](docs/gallery-mobile.png)
+[English](README.md) · [文档索引](docs/README.md) · [组件参考](docs/COMPONENTS.md) · [设计系统](docs/design.md) · [架构说明](docs/ARCHITECTURE.md) · [画廊（GitHub Pages）](https://markyangkp.github.io/dsh-intelligence-ui/gallery.html) · [亮色](docs/gallery.png) / [暗色](docs/gallery-dark.png) / [窄屏](docs/gallery-mobile.png)
 
 **状态：** v1.1.0 · 44 个组件 · MIT · 明暗主题 · 390/920px · macOS 本地验证，Linux 由 CI 覆盖。
 
@@ -242,7 +242,7 @@ bundle 体积/schema 指纹、图表 SSR、真实浏览器生命周期与堆检�
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)                                          | 渲染管线、模块图、健壮性设计、提示词架构、测试矩阵 |
 | [docs/design.md](docs/design.md)                                                      | 设计系统 v3 的 token、字号阶梯与逐组件视觉规范     |
 | [docs/README.md](docs/README.md)                                                      | 文档索引                                           |
-| [画廊（GitHub Pages）](https://MarkYangKp.github.io/dsh-intelligence-ui/gallery.html) | 完整渲染画廊（生成物，由 Pages 提供）              |
+| [画廊（GitHub Pages）](https://markyangkp.github.io/dsh-intelligence-ui/gallery.html) | 完整渲染画廊（生成物，由 Pages 提供）              |
 
 ## 贡献
 

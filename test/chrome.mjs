@@ -1,6 +1,6 @@
 import { execFileSync, spawn } from 'node:child_process'
-import { existsSync, readdirSync, writeFileSync } from 'node:fs'
-import { homedir } from 'node:os'
+import { existsSync, mkdtempSync, readdirSync, writeFileSync } from 'node:fs'
+import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 /** Chromium binaries installed by Playwright for the current user (version-agnostic). */
@@ -62,21 +62,37 @@ if (!CHROME) {
 const noSandbox =
   process.env.CI === 'true' || process.env.IUI_CHROME_NO_SANDBOX === '1' || process.getuid?.() === 0
 
+// macOS workspace sandboxes deny Chromium's multiprocess Mach rendezvous, so the CDP
+// path uses a single process there; Linux/CI uses the normal multiprocess mode.
 let singleProcess = process.env.IUI_CHROME_SINGLE_PROCESS === '1'
+const useSingleProcess = () => singleProcess || process.platform === 'darwin'
+
+const HEADLESS_FLAGS = [
+  '--headless',
+  '--disable-gpu',
+  '--disable-background-networking',
+  '--disable-component-update',
+  '--disable-dev-shm-usage',
+  '--disable-extensions',
+  '--no-first-run',
+  '--mute-audio',
+  '--hide-scrollbars'
+]
+
+const sandboxFlags = () => (noSandbox ? ['--no-sandbox', '--disable-setuid-sandbox'] : [])
+const singleProcessFlags = () =>
+  useSingleProcess() ? ['--no-sandbox', '--single-process', '--in-process-gpu', '--no-zygote'] : []
+const freshProfile = () => mkdtempSync(join(tmpdir(), 'iui-chrome-'))
+
 export function runChrome(args) {
   const run = () =>
     execFileSync(
       CHROME,
       [
-        '--headless',
-        '--disable-gpu',
-        '--disable-background-networking',
-        '--no-first-run',
-        '--disable-component-update',
-        ...(noSandbox ? ['--no-sandbox'] : []),
-        ...(singleProcess
-          ? ['--no-sandbox', '--single-process', '--in-process-gpu', '--no-zygote']
-          : []),
+        ...HEADLESS_FLAGS,
+        ...sandboxFlags(),
+        ...(singleProcess ? singleProcessFlags() : []),
+        '--user-data-dir=' + freshProfile(),
         ...args
       ],
       {
@@ -90,7 +106,6 @@ export function runChrome(args) {
   try {
     return run()
   } catch (error) {
-    // macOS workspace sandboxes deny Chromium's multiprocess Mach rendezvous.
     // A local-fixture-only fallback; test failures in the returned DOM still fail.
     if (
       singleProcess ||
@@ -109,22 +124,32 @@ async function launch({ profile, args = [] }) {
   const chrome = spawn(
     CHROME,
     [
-      '--headless',
-      '--disable-gpu',
-      '--disable-background-networking',
-      '--no-first-run',
-      '--disable-component-update',
-      '--no-sandbox',
-      '--single-process',
-      '--in-process-gpu',
-      '--no-zygote',
+      ...HEADLESS_FLAGS,
+      ...sandboxFlags(),
+      ...singleProcessFlags(),
       '--remote-debugging-pipe',
-      '--user-data-dir=' + profile,
+      '--user-data-dir=' + (profile || freshProfile()),
       ...args,
       'about:blank'
     ],
-    { stdio: ['ignore', 'ignore', 'ignore', 'pipe', 'pipe'] }
+    { stdio: ['ignore', 'ignore', 'pipe', 'pipe', 'pipe'] }
   )
+  let stderrTail = ''
+  chrome.stdio[2].setEncoding('utf8')
+  chrome.stdio[2].on('data', (chunk) => {
+    stderrTail = (stderrTail + chunk).slice(-4000)
+  })
+  chrome.once('exit', (code, signal) => {
+    for (const request of pending.values()) {
+      clearTimeout(request.timer)
+      request.reject(
+        new Error(
+          `Chrome exited early (code ${code}, signal ${signal}): ${stderrTail.slice(-800) || 'no stderr'}`
+        )
+      )
+    }
+    pending.clear()
+  })
   let serial = 0,
     buffer = ''
   const pending = new Map()
