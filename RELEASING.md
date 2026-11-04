@@ -27,7 +27,9 @@ Prerequisites: a clean work tree, the full test suite green, and `lib/client.js`
    - **Security** → **Private vulnerability reporting**;
    - branch protection for `main` (require the `ci` checks, no direct pushes);
    - Description, topics (`deepseek-harness`, `dsh`, `dsh-plugin`, `openui`, `generative-ui`),
-     social preview image (`docs/hero.png`), and Discussions if desired.
+     and Discussions if desired;
+   - Social preview: upload `docs/social-preview.png` under Settings → General → Social preview
+     (GitHub has no API for this setting).
 4. Point local `main` at the public remote and remove/rename any private remote:
 
    ```bash

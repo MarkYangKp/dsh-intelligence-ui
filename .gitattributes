@@ -10,6 +10,7 @@ lib/client.js linguist-generated=true
 docs/gallery.html linguist-generated=true
 docs/gallery*.png linguist-generated=true
 docs/hero.png linguist-generated=true
+docs/social-preview.png linguist-generated=true
 
 # The repository contains a few deliberately large text fixtures.
 test/fixtures/dsh-tokens.json linguist-generated=true
