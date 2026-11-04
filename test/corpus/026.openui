@@ -1,0 +1,4 @@
+root = Stack([outer], "column", 12)
+outer = Card([Section("三层嵌套布局", "从 Card 到 Text 共 7 层容器", [Grid([inner1, inner2], 2, 12, 180)])])
+inner1 = Card([CardHeader("嵌套 A", "Card → Section → Grid → Card → Row"), Row([Col([Box([Text("最深一层的文本仍然可读", "sm")], "flex", "row", 8)])], 12)])
+inner2 = Card([CardHeader("嵌套 B", "Row 内再嵌 Col 与 Box"), Col([Row([Icon("🔍", 14, "brand"), Text("保持结构清晰", "sm")], 8, "center"), Row([Icon("📐", 14, "secondary"), Text("避免过度嵌套", "sm")], 8, "center")], 10)])

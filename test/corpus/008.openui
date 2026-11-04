@@ -1,0 +1,10 @@
+root = Stack([h, meta, tl, t, cause, note], "column", 12)
+h = Heading("订单超时故障复盘：3 分钟定位，25 分钟恢复", 2)
+meta = Row([Badge("已恢复", "success"), Badge("影响 8 分钟", "warning"), Badge("无数据丢失", "info")], 8, "center")
+tl = Timeline([{title: "告警触发", time: "14:02", description: "订单接口超时率升至 12%", variant: "error"}, {title: "定位根因", time: "14:05", description: "数据库连接池耗尽", variant: "warning"}, {title: "灰度回滚", time: "14:11", description: "回滚至上一版本，影响面收敛到 5%", variant: "success"}, {title: "恢复全量", time: "14:27", description: "超时率回落至基线以下", variant: "success"}])
+t = Table("关键节点与动作", ["时刻", "动作", "结果"], rows)
+rows = [{"时刻": "14:02", "动作": "监控告警", "结果": "值班同学确认影响面"}, {"时刻": "14:05", "动作": "检查连接池", "结果": "连接数达到上限"}, {"时刻": "14:11", "动作": "灰度回滚", "结果": "错误率下降"}, {"时刻": "14:27", "动作": "确认恢复", "结果": "全部指标回到基线"}]
+cause = Card(ch, txt)
+ch = CardHeader("根因与改进", "连接池耗尽叠加缓存击穿")
+txt = TextContent("根因：批量导入任务占满数据库连接池，热点缓存同时过期导致请求直接回源。改进：导入任务限流、热点缓存增加随机过期时间、连接池告警阈值下调至 80%。", "sm", true)
+note = Callout("经验", "先止血再定位：灰度回滚把影响面从全量压到 5%，为定位争取了时间。", "info")

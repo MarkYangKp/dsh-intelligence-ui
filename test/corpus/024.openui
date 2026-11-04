@@ -1,0 +1,7 @@
+root = Stack([h, sub, tl, st, kv, note], "column", 12)
+h = Heading(text: "用户旅程：从首次访问到复购", level: 2)
+sub = TextContent(text: "把用户在关键触点上的行为与情绪拆开看，更容易找到流失环节。", size: "md", muted: True)
+tl = Timeline([{title: "首次访问", description: "通过内容平台进入商品页，关注价格与评价", variant: "info"}, {title: "加购未下单", description: "在结算页因运费犹豫，离开后收到提醒", variant: "warning"}, {title: "完成首单", description: "使用新人券下单，物流体验正常", variant: "success"}, {title: "二次复购", description: "收到定向券后再次购买，客单价提升", variant: "brand"}])
+st = Steps(["触达", "浏览", "转化", "复购"], 2)
+kv = KeyValue([{label: "最大流失点", value: "结算页运费展示不明确"}, {label: "情绪高点", value: "物流时效超出预期"}, {label: "改进优先级", value: "先修运费说明，再做复购券"}], 2)
+note = Callout("方法提示", "旅程图要基于真实行为数据，而不是会议室里的想象；每条情绪标注都应能对上数据。", "info")

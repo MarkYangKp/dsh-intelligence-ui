@@ -1,0 +1,7 @@
+root = Stack([h, intro, t, rows, code, note], "column", 12)
+h = Heading(text: "慢查询优化：联合索引的顺序问题", level: 2)
+intro = TextContent(text: "联合索引遵循最左前缀原则，顺序错了索引就用不上。", size: "md")
+t = Table(title: "索引使用情况", columns: ["查询场景", "现有索引", "是否命中"], data: rows)
+rows = [{"查询场景": "按用户查询最近订单", "现有索引": "(status, user_id, created_at)", "是否命中": "否"}, {"查询场景": "按状态统计订单量", "现有索引": "(user_id, status, created_at)", "是否命中": "否"}, {"查询场景": "按用户与状态查询", "现有索引": "(user_id, status, created_at)", "是否命中": "是"}]
+code = CodeBlock("-- 错误顺序：选择性低的列放在最左\nCREATE INDEX idx_orders_bad ON orders (status, user_id, created_at);\n\n-- 正确顺序：选择性高的列放在最左\nCREATE INDEX idx_orders_good ON orders (user_id, status, created_at);", "sql", "索引调整")
+note = Callout("验证方法", "用 EXPLAIN 看 key 与实际扫描行数，比凭经验判断更可靠。", "info")

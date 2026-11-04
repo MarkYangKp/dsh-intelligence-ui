@@ -1,0 +1,13 @@
+root = Stack([h, row1, row2, tbl, emptyT, note], "column", 12)
+h = Heading(text: "综合回归：多种模型输出写法共存", level: 2)
+row1 = Row([s1, s2], 10)
+s1 = StatCard(label: "指标 A", value: "1,024", delta: "+8.1%", trend: "up", icon: null, note: None, accent: "brand")
+s2 = StatCard("指标 B", "96.4%", None, None, undefined, null, "success")
+row2 = Grid([c1, c2], 2, 12, 220)
+c1 = Chart(title: "趋势 A", type: "smooth", series: [{name: "值", values: [3, 5, 4, 6]}], labels: ["一", "二", "三", "四"], height: 180)
+c2 = Chart("趋势 B", "column", [{name: "值", values: [2, 4, 3, 5]}], None, ["一", "二", "三", "四"], 180, "number", True)
+tbl = Table(title: "明细", columns: ["项", "值", "状态"], data: rows, compact: true)
+rows = [{"项": "吞吐", "值": 1200, "状态": "正常"}, {"项": "延迟", "值": 86, "状态": "正常"}, {"项": "错误率", "值": 0.18, "状态": "观察"}]
+emptyRows = []
+emptyT = Table("空明细", ["列"], emptyRows)
+note = Callout("回归说明", "本程序混合了命名参数、冒号参数、位置尺寸 token、null 占位与枚举同义词等写法，应零错误渲染。", "info")

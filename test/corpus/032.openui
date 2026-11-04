@@ -1,0 +1,7 @@
+root = Stack([h, meta, d, ft, t, note], "column", 12)
+h = Heading("依赖升级：日志库从 3.2 升到 4.0", 2)
+meta = KeyValue([{label: "影响范围", value: "仅日志模块"}, {label: "破坏性变更", value: "2 项"}, {label: "回归结论", value: "全部通过"}], 3)
+d = Diff("package.json", "--- a/package.json\n+++ b/package.json\n@@ -12,7 +12,7 @@\n-    \"logger\": \"^3.2.1\",\n+    \"logger\": \"^4.0.0\",")
+ft = FileTree("升级涉及文件", [{path: "package.json", status: "modified"}, {path: "pnpm-lock.yaml", status: "modified"}, {path: "src/logger.ts", status: "modified"}])
+t = Table("破坏性变更检查", ["变更点", "影响", "处理"], [{"变更点": "默认输出改为 JSON", "影响": "本地调试日志可读性下降", "处理": "开发环境显式配置 plain 格式"}, {"变更点": "移除同步写日志 API", "影响": "无引用", "处理": "无需处理"}])
+note = Callout("升级建议", "先在预发环境观察一天，确认日志采集管道兼容 JSON 输出后再合入主干。", "success")

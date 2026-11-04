@@ -1,0 +1,7 @@
+root = Stack([h, sub, cmp, t, rows, note], "column", 12)
+h = Heading("两套方案的三年总成本对比", 2)
+sub = Text("单位：万元，含运维人力与云资源", "sm", "normal", "secondary")
+cmp = ComparisonBar("三年总成本", [{label: "自建方案", value: 486, variant: "warning"}, {label: "托管方案", value: 312, variant: "success"}], true, " 万元")
+t = Table("成本构成", ["科目", "自建方案", "托管方案"], rows)
+rows = [{"科目": "硬件与云资源", "自建方案": 168, "托管方案": 252}, {"科目": "运维人力", "自建方案": 246, "托管方案": 48}, {"科目": "迁移与培训", "自建方案": 72, "托管方案": 12}, {"科目": "三年合计", "自建方案": 486, "托管方案": 312}]
+note = Callout("结论", "托管方案三年可节省 174 万元，但需确认数据出域与合规要求，并评估长期锁定风险。", "success")

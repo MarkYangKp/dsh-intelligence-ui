@@ -1,0 +1,10 @@
+root = Stack([h, kpis, chart, tbl, rows, note], "column", 12)
+h = Heading("模型评估：AUC 0.912，长尾样本仍是短板", 2)
+kpis = Grid([k1, k2, k3], 3, 12, 150)
+k1 = StatCard(label: "AUC", value: "0.912", delta: "+0.018", trend: "up", icon: null, note: None, accent: "success")
+k2 = StatCard(label: "长尾样本召回", value: "61.4%", delta: "-2.3pp", trend: "down", icon: "📉", note: "样本占比 8%", accent: "danger")
+k3 = StatCard("推理耗时", "12 ms", "单条 P50", "flat", null, null, "brand")
+chart = Chart("训练与验证损失", "line", [{name: "训练损失", values: [0.82, 0.61, 0.48, 0.39, 0.34, 0.31]}, {name: "验证损失", values: [0.86, 0.64, 0.52, 0.45, 0.42, 0.43]}], None, ["E1", "E2", "E3", "E4", "E5", "E6"], 200, "number", True)
+tbl = Table(None, ["模型", "AUC", "准确率", "召回率"], rows)
+rows = [{"模型": "基线", "AUC": 0.884, "准确率": 0.902, "召回率": 0.841}, {"模型": "当前版本", "AUC": 0.912, "准确率": 0.928, "召回率": 0.874}, {"模型": "长尾增强版", "AUC": 0.906, "准确率": 0.915, "召回率": 0.896}]
+note = Callout("结论", "整体指标提升来自特征扩充；长尾召回下降需在下一轮加入重采样策略，不应只看总体 AUC。", "warning")

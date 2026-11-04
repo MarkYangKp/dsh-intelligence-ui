@@ -1,0 +1,15 @@
+# Normalise line endings; keep executables/binary assets explicit.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.woff2 binary
+*.tgz binary
+
+# Treat generated artefacts as generated on GitHub.
+lib/client.js linguist-generated=true
+docs/gallery.html linguist-generated=true
+docs/gallery*.png linguist-generated=true
+docs/hero.png linguist-generated=true
+
+# The repository contains a few deliberately large text fixtures.
+test/fixtures/dsh-tokens.json linguist-generated=true

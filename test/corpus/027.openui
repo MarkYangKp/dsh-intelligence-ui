@@ -1,0 +1,7 @@
+root = Stack([h, sub, seg, tabs, acc, row], "column", 12)
+h = Heading("消息通知策略", 2)
+sub = TextContent("先按重要性分级，再按渠道分流，避免「所有消息都打扰」。", "sm", true)
+seg = SegmentedControl([{label: "全部通知", content: BulletList(["订单状态变更", "支付结果", "物流更新", "活动提醒"])}, {label: "仅重要通知", content: BulletList(["支付结果", "安全提醒"])}], 0)
+tabs = Tabs([{label: "站内信", content: TextContent("默认渠道，适合所有非紧急通知。", "sm")}, {label: "短信", content: TextContent("仅用于安全与支付类高优先级通知。", "sm")}, {label: "邮件", content: TextContent("适合周报与账单类低频通知。", "sm")}], 1)
+acc = Accordion([{title: "免打扰时段", content: TextContent("22:00–08:00 仅推送安全类通知，其余延迟到次日。", "sm")}, {title: "退订规则", content: TextContent("营销类通知必须提供一键退订入口。", "sm")}])
+row = Row([Button("保存为默认", "save-default", "primary"), Button("恢复默认", "reset-default", "ghost")], 8, "center")

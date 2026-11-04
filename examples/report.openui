@@ -1,0 +1,8 @@
+root = Stack([hd, kpis, chart, ok], "column", 12)
+hd = Heading("本周收入环比 +12.6%，主要来自 App 渠道", 2)
+kpis = Grid([k1, k2, k3], 3, 12, 150)
+k1 = StatCard("本周收入", "¥84,300", "+12.6%", "up", "💰", "含税 GMV", "brand")
+k2 = StatCard("新增用户", "1,204", "+3.1%", "up", "👥", null, "success")
+k3 = StatCard("退款率", "1.2%", "-0.3pp", "down", "↩️", null, "warning")
+chart = Chart("近 5 日收入", "area", [{name: "收入", values: [12, 13, 9.8, 12.9, 15.2]}], [], ["一", "二", "三", "四", "五"], 200, "compact", true, true, false)
+ok = Callout("结论", "收入增长的同时退款率下降，增长质量在改善；建议把预算向 App 渠道倾斜 20%。", "success")

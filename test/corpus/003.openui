@@ -1,0 +1,7 @@
+root = Stack([h, sub, st, ck, tl, note], "column", 12)
+h = Heading("一次标准发布的全流程", 2)
+sub = TextContent("从提交到全量共 5 个关卡，任一关卡失败即回滚；发布窗口为工作日 10:00–16:00。", "sm", true)
+st = Steps(["提交变更", "自动化测试", "代码评审", "灰度验证", "全量发布"], 2)
+ck = Checklist("发布前检查", [{text: "单元测试与集成测试全部通过", status: "done"}, {text: "变更说明与回滚预案已归档", status: "done"}, {text: "监控看板确认基线正常", status: "doing"}, {text: "业务方确认发布窗口", status: "todo"}])
+tl = Timeline([{title: "变更提交", time: "10:00", description: "关联需求单与变更单", variant: "brand"}, {title: "自动化测试", time: "10:12", description: "流水线执行单元与集成测试", variant: "success"}, {title: "灰度 5%", time: "10:40", description: "观察核心指标 20 分钟", variant: "warning"}, {title: "全量发布", time: "11:05", description: "分批滚动，每批间隔 5 分钟", variant: "success"}])
+note = Callout("回滚口径", "灰度阶段错误率超过 1% 或 P95 延迟翻倍，立即回滚上一版本，并在故障看板登记。", "info")

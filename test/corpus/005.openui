@@ -1,0 +1,11 @@
+root = Stack([h, sub, meta, changes, ft, issues, rows, list, note], "column", 12)
+h = Heading("代码评审：格式化函数的边界处理", 2)
+sub = TextContent("本次变更把百分比格式化从浮点乘法改为整数四舍五入，避免 0.1 + 0.2 类精度问题。", "md")
+meta = KeyValue([{label: "评审人", value: "两位后端工程师"}, {label: "变更规模", value: "+12 / -4 行"}, {label: "结论", value: "修改后通过"}], 3)
+changes = Section("变更内容", "核心改动集中在 format.ts", [d, ft])
+d = Diff("src/format.ts", "--- a/src/format.ts\\n+++ b/src/format.ts\\n@@ -1,4 +1,5 @@\\n-export const pct = (n: number) => n * 100\\n+export const pct = (n: number) =>\\n+  Math.round(n * 1000) / 10\\n // 保留一位小数")
+ft = FileTree("变更文件", [{path: "src/format.ts", status: "modified"}, {path: "test/format.test.ts", status: "added"}, {path: "src/legacy-pct.ts", status: "deleted"}])
+issues = Table("评审意见", ["意见", "处理"], rows)
+rows = [{"意见": "缺少对 NaN 与 Infinity 的处理", "处理": "已补充返回 '-' 的分支"}, {"意见": "测试用例只覆盖正数", "处理": "补充负数与小数用例"}, {"意见": "注释说明保留位数的取整方式", "处理": "已在代码中说明"}]
+list = BulletList(["公共工具函数修改后需同步更新示例文档", "涉及展示精度的改动必须附对比截图"], false)
+note = Callout("总结", "改动本身很小，但涉及所有金额展示，建议灰度一天后再合入主干。", "success")

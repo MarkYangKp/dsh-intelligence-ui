@@ -1,0 +1,8 @@
+# Default owner for everything in the repository.
+* @MarkYangKp
+
+# High-risk areas that should always get a maintainer review.
+/src/ @MarkYangKp
+/index.js @MarkYangKp
+/lib/client.js @MarkYangKp
+/.github/ @MarkYangKp

@@ -1,0 +1,7 @@
+root = Stack([h, s1, s2, c1, c2, note], "column", 12)
+h = Heading("空值与默认值：模型常用 null 占位", 2)
+s1 = StatCard("指标一", "42", null, "up", null, None, "success")
+s2 = StatCard(label: "指标二", value: "68%", delta: None, trend: "flat", icon: undefined, note: null, accent: "brand")
+c1 = Chart("趋势一", "bar", [{name: "值", values: [3, 5, 4]}], None, ["一", "二", "三"], undefined, "number", True)
+c2 = Chart(title: "趋势二", type: "line", series: [{name: "值", values: [2, 4, 3, 5]}], labels: ["一", "二", "三", "四"], height: 180)
+note = Callout("兼容说明", "None、True、undefined 等 Python/JS 风格字面量会被归一为 null/true/false；可选参数传 null 等价于省略。", "info")

@@ -1,0 +1,6 @@
+root = Stack([h, t, kv, cmp, note], "column", 12)
+h = Heading("消息队列选型：三种方案对比", 2)
+t = Table("方案对比", ["维度", "方案 A", "方案 B", "方案 C"], [{"维度": "部署成本", "方案 A": "低", "方案 B": "中", "方案 C": "高"}, {"维度": "吞吐上限", "方案 A": "中", "方案 B": "高", "方案 C": "高"}, {"维度": "运维复杂度", "方案 A": "低", "方案 B": "中", "方案 C": "高"}, {"维度": "生态完善度", "方案 A": "一般", "方案 B": "好", "方案 C": "一般"}])
+kv = KeyValue([{label: "推荐场景", value: "中小规模、团队人力有限"}, {label: "不推荐场景", value: "需要严格顺序与事务消息"}, {label: "迁移成本", value: "从方案 A 迁移约需两周"}], 2)
+cmp = ComparisonBar("运维复杂度评分（越低越好）", [{label: "方案 A", value: 2, variant: "success"}, {label: "方案 B", value: 5, variant: "brand"}, {label: "方案 C", value: 8, variant: "error"}], true, " 分")
+note = Callout("建议", "先按团队能力选方案 A，把复杂度留给未来；流量增长到单集群瓶颈前再评估迁移。", "info")

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/MarkYangKp/dsh-intelligence-ui/security/advisories/new
+    about: Please report security issues privately instead of opening a public issue.
+  - name: Documentation
+    url: https://github.com/MarkYangKp/dsh-intelligence-ui/tree/main/docs
+    about: Component reference, architecture, and design system documentation.

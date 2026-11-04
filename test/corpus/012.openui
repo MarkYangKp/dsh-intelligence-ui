@@ -1,0 +1,9 @@
+root = Stack([h, lead, tabs, note], "column", 12)
+h = Heading("三种常见鉴权方式对比", 2)
+lead = TextContent("选型的关键不是「哪个更安全」，而是「哪个匹配你的客户端形态与运维成本」。", "md")
+tabs = Tabs([{label: "会话 Cookie", content: c1}, {label: "JWT", content: c2}, {label: "API Key", content: c3}], 0)
+c1 = Section(title: "会话 Cookie", subtitle: "浏览器端首选", [TextContent("服务端保存会话状态，浏览器自动携带 Cookie；适合同域 Web 应用。", "sm"), CodeBlock("fetch('/api/orders', {\n  credentials: 'include'\n})", "js", "同源请求自动带 Cookie", false)])
+c2 = Section(title: "JWT", subtitle: "跨端与无状态场景", [TextContent("令牌自包含声明，服务端无需查会话；注意刷新令牌与吊销策略。", "sm"), CodeBlock("Authorization: Bearer <token>", "http", "放在请求头", false)])
+c3 = Section(title: "API Key", subtitle: "服务间调用", [TextContent("适合机器对机器调用，务必按最小权限签发并支持轮换。", "sm"), Table(title: "选型对照", columns: ["方式", "存储位置", "适合场景"], data: rows, compact: true)])
+rows = [{"方式": "Cookie", "存储位置": "浏览器", "适合场景": "同域 Web"}, {"方式": "JWT", "存储位置": "内存/安全存储", "适合场景": "跨端 App"}, {"方式": "API Key", "存储位置": "服务端密钥管理", "适合场景": "服务间调用"}]
+note = Callout("共同底线", "无论哪种方式，都要走 HTTPS、设置过期时间、支持吊销，并记录鉴权失败审计日志。", "warning")

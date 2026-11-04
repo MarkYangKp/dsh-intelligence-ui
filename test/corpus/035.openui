@@ -1,0 +1,7 @@
+root = Stack([h, hero, div1, sec1, sec2, note], "column", 12)
+h = Heading("帮助中心导航", 2)
+hero = Row([Image("assets/help-cover.png", "帮助中心封面", "160px", "96px", "10px", "cover"), Stack([TextContent("先从最常见的三类问题开始。", "sm"), Link("查看完整目录", "#toc")], "column", 6)], 12, "center")
+div1 = Divider("热门专题")
+sec1 = Section("账号与登录", "共 12 篇文档", [BulletList(["如何重置密码", "如何开启二次验证", "账号被锁定怎么办"])])
+sec2 = Section("订单与支付", "共 18 篇文档", [BulletList(["订单可以修改地址吗", "支付失败如何排查", "如何申请退款"], true)])
+note = Callout("反馈", "找不到答案时，可以在文档底部提交反馈，我们会按周汇总补充。", "info")

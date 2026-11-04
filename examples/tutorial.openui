@@ -1,0 +1,7 @@
+root = Stack([hd, flow, steps, code], "column", 12)
+hd = Heading("登录流程：先拿 token，再换会话", 2)
+flow = Diagram("请求链路", 460, 150, nodes, edges, [], 24)
+nodes = [{id: "c", label: "客户端", x: 60, y: 60, variant: "brand"}, {id: "a", label: "认证服务", x: 230, y: 60}, {id: "u", label: "用户库", x: 400, y: 60, variant: "success"}]
+edges = [{from: "c", to: "a", label: "凭证"}, {from: "a", to: "u", label: "校验"}, {from: "u", to: "c", label: "token", dashed: true}]
+steps = Steps(["客户端提交账号凭证", "认证服务校验并签发 token", "客户端携带 token 访问业务接口"], 1)
+code = CodeBlock("POST /auth/login\n{ \"account\": \"a@b.c\", \"password\": \"***\" }\n→ 200 { \"token\": \"...\", \"expiresIn\": 3600 }", "http", "接口示例")

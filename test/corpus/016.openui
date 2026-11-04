@@ -1,0 +1,6 @@
+root = Stack([h, tl, tabs, acc, q], "column", 12)
+h = Heading("产品路线图：三个季度的演进节奏", 2)
+tl = Timeline([{title: "第三季度 · 夯实基础", description: "完成数据看板与权限体系", variant: "success"}, {title: "第四季度 · 提升效率", description: "自动化报表与批量操作", variant: "brand"}, {title: "明年一季度 · 智能增强", description: "引入异常检测与建议引擎", variant: "info"}])
+tabs = Tabs([{label: "已交付", content: BulletList(["统一数据看板", "角色与权限体系", "操作审计日志"])}, {label: "进行中", content: BulletList(["自动化周报生成", "批量导出", "移动端适配"])}, {label: "规划中", content: BulletList(["异常检测", "指标归因分析", "建议引擎"])}], 1)
+acc = Accordion([{title: "为什么先做权限体系", content: TextContent("权限是后续所有协作功能的前置条件，越晚补成本越高。", "sm")}, {title: "自动化周报的范围", content: TextContent("首期只覆盖经营与运营两类周报，技术周报在下一期接入。", "sm")}])
+q = Quote("路线图不是承诺清单，而是资源分配的共同语言。", "季度规划会纪要")

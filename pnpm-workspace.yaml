@@ -1,0 +1,6 @@
+# pnpm 11+ replaced `onlyBuiltDependencies` with `allowBuilds`; the old key is silently
+# ignored, which makes `pnpm install` fail with ERR_PNPM_IGNORED_BUILDS.
+# Only these two dependencies need install scripts (esbuild binary, lang-core postinstall).
+allowBuilds:
+  esbuild: true
+  '@openuidev/lang-core': false # denies its install-time telemetry postinstall

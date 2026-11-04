@@ -1,0 +1,13 @@
+node_modules/
+lib/
+coverage/
+dist/
+pnpm-lock.yaml
+docs/gallery.html
+docs/*.png
+test/fixtures/dsh-tokens.json
+test/fixtures/dsh-theme.css
+test/corpus/
+examples/
+*.openui
+*.tgz

@@ -1,0 +1,78 @@
+name: Bug report
+description: Something renders incorrectly, breaks, or behaves unexpectedly
+title: '[bug] '
+labels: ['bug', 'needs triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please fill in as much as you can — the more reproducible the case,
+        the faster it can be fixed. For security issues, do **not** open a public issue; see
+        [SECURITY.md](../blob/main/SECURITY.md).
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Expected vs. actual behaviour.
+      placeholder: 'I wrote this fence… it rendered as … instead of …'
+    validations:
+      required: true
+  - type: textarea
+    id: program
+    attributes:
+      label: OpenUI program / reply content
+      description: The smallest fence program or Markdown that reproduces the issue.
+      render: text
+    validations:
+      required: false
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: Console shows `[dsh-intelligence-ui/x.y.z]`.
+      placeholder: '1.1.0'
+    validations:
+      required: true
+  - type: input
+    id: host-version
+    attributes:
+      label: DeepSeek Harness version
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - OpenUI fence rendering
+        - Automatic Markdown compilation
+        - Component appearance / layout
+        - Chart / map / diagram
+        - Interactive controls
+        - Host prompt / model guidance
+        - Install / build / tooling
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options: [Light, Dark, Both, Not applicable]
+    validations:
+      required: false
+  - type: input
+    id: viewport
+    attributes:
+      label: Viewport width (px)
+      description: Especially useful for 390px layout issues.
+      placeholder: '920'
+    validations:
+      required: false
+  - type: textarea
+    id: extra
+    attributes:
+      label: Console output / screenshots
+      description: Any errors from the browser console, or screenshots of the result.
+    validations:
+      required: false

@@ -1,0 +1,143 @@
+/*
+ * Fallback theme for offline tests and previews.
+ *
+ * The plugin renders entirely against the host application's CSS custom
+ * properties (`--dsw-*`, `--dsh-*`). Those values belong to the host product
+ * and are not redistributed here. Maintainers who have a local host
+ * installation can generate an exact snapshot with:
+ *
+ *     node scripts/extract-theme.mjs
+ *
+ * That writes test/fixtures/dsh-theme.css (git-ignored), which the gallery and
+ * the design gate prefer over this file. The values below are our own neutral
+ * approximation with the same token names, so offline tests exercise the same
+ * token surface without shipping extracted product styling.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* surfaces */
+  --dsw-alias-bg-base: #ffffff;
+  --dsw-alias-bg-layer-1: #ffffff;
+  --dsw-alias-bg-layer-2: #f6f7f9;
+  --dsw-alias-bg-module-platform: #f3f4f7;
+  --dsw-alias-bg-overlay: #e6e9ef;
+  --dsw-alias-bg-skeleton: #eef0f4;
+  --dsw-alias-markdown-code-block: #f8f9fb;
+  --dsw-alias-markdown-code-block-banner: #f3f5f8;
+  --dsw-alias-markdown-inline-code: #eef0f4;
+  --dsw-alias-bg-document-selection: #cfe0ff;
+
+  /* borders */
+  --dsw-alias-border-l1: #00000010;
+  --dsw-alias-border-l2: #0000001f;
+  --dsw-alias-border-l3: #00000029;
+  --dsw-alias-border-l4: #00000033;
+
+  /* ink */
+  --dsw-alias-label-primary: #17181b;
+  --dsw-alias-label-secondary: #5b616b;
+  --dsw-alias-label-tertiary: #7d848f;
+  --dsw-alias-label-caption: #a3a9b3;
+  --dsw-alias-label-dimmed: #c3c8d1;
+  --dsw-alias-label-primary-inverted: #ffffff;
+
+  /* accent */
+  --dsw-alias-state-business-primary: #3768d8;
+  --dsw-alias-brand-primary: #17181b;
+  --dsw-alias-link: #3768d8;
+
+  /* semantic states */
+  --dsw-alias-state-success-primary: #1a9b58;
+  --dsw-alias-state-warn-primary: #b7791f;
+  --dsw-alias-state-warn-label: #8a5a12;
+  --dsw-alias-state-error-primary: #cf2f2f;
+
+  /* interaction */
+  --dsw-alias-interactive-bg-hover: #eef0f4;
+  --dsw-alias-interactive-bg-hover-solid: #e7eaf0;
+  --dsw-alias-interactive-bg-active: #dfe3ea;
+
+  /* buttons */
+  --dsw-alias-button-primary-fill: #17181b;
+  --dsw-alias-button-primary-hover: #000000;
+
+  /* code diff */
+  --dsw-alias-code-diff-added: #e6f7ee;
+  --dsw-alias-code-diff-deleted: #fdeaea;
+
+  /* shape & elevation */
+  --dsw-radius-xs: 4px;
+  --dsw-radius-sm: 8px;
+  --dsw-radius-md: 12px;
+  --dsw-radius-lg: 16px;
+  --dsw-radius-xl: 20px;
+  --dsw-elevation-stroke-color: #00000033;
+  --dsw-elevation-stroke: 0 0 0 0.5px var(--dsw-elevation-stroke-color);
+  --dsw-elevation-soft: var(--dsw-elevation-stroke), 0 4px 16px 0 #00000008, 0 0 24px 0 #00000008;
+  --dsw-elevation-panel: var(--dsw-elevation-stroke), 0 3px 8px 0 #00000008, 0 0 16px 0 #00000005;
+  --dsw-elevation-prominent:
+    var(--dsw-elevation-stroke), 0 3px 8px 0 #0000000a, 0 0 20px 0 #0000000d;
+
+  /* type */
+  --dsw-font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --ds-font-family-code:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --dsh-font-family-code: var(--ds-font-family-code);
+  --dsh-content-font-size: 14px;
+  --dsh-content-font-delta: 0px;
+  --dsh-content-font-size-secondary: 13px;
+  --dsh-content-font-delta-secondary: 0px;
+  --dsh-code-font-size: 11px;
+  --dsh-code-font-delta: 0px;
+}
+
+body[data-ds-dark-theme] {
+  color-scheme: dark;
+
+  --dsw-alias-bg-base: #141517;
+  --dsw-alias-bg-layer-1: #202225;
+  --dsw-alias-bg-layer-2: #282b2f;
+  --dsw-alias-bg-module-platform: #24272b;
+  --dsw-alias-bg-overlay: #3a3e44;
+  --dsw-alias-bg-skeleton: #2c2f34;
+  --dsw-alias-markdown-code-block: #181a1d;
+  --dsw-alias-markdown-code-block-banner: #1d2024;
+  --dsw-alias-markdown-inline-code: #2a2d32;
+  --dsw-alias-bg-document-selection: #2f4a7a;
+
+  --dsw-alias-border-l1: #ffffff14;
+  --dsw-alias-border-l2: #ffffff24;
+  --dsw-alias-border-l3: #ffffff2e;
+  --dsw-alias-border-l4: #ffffff38;
+
+  --dsw-alias-label-primary: #f2f4f7;
+  --dsw-alias-label-secondary: #c3c9d2;
+  --dsw-alias-label-tertiary: #9aa2ae;
+  --dsw-alias-label-caption: #767e8a;
+  --dsw-alias-label-dimmed: #5a616b;
+  --dsw-alias-label-primary-inverted: #17181b;
+
+  --dsw-alias-state-business-primary: #7aa7ff;
+  --dsw-alias-brand-primary: #f2f4f7;
+  --dsw-alias-link: #8fb6ff;
+
+  --dsw-alias-state-success-primary: #4fd08a;
+  --dsw-alias-state-warn-primary: #e2b055;
+  --dsw-alias-state-warn-label: #edc072;
+  --dsw-alias-state-error-primary: #f67575;
+
+  --dsw-alias-interactive-bg-hover: #ffffff12;
+  --dsw-alias-interactive-bg-hover-solid: #2e3237;
+  --dsw-alias-interactive-bg-active: #383c42;
+
+  --dsw-alias-button-primary-fill: #f2f4f7;
+  --dsw-alias-button-primary-hover: #ffffff;
+
+  --dsw-alias-code-diff-added: #17301f;
+  --dsw-alias-code-diff-deleted: #3a1d1f;
+
+  --dsw-elevation-stroke-color: #ffffff2e;
+}

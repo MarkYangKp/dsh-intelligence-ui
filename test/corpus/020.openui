@@ -1,0 +1,9 @@
+root = Stack([h, d, st, ft, note], "column", 12)
+h = Heading("构建与部署流水线：从提交到上线约 18 分钟", 2)
+d = Diagram("流水线各阶段与耗时", 680, 200, nodes, edges, steps)
+nodes = [{id: "git", label: "提交代码", sub: "触发流水线", x: 70, y: 60, variant: "info"}, {id: "test", label: "测试", sub: "约 6 分钟", x: 250, y: 60, variant: "brand"}, {id: "build", label: "构建镜像", sub: "约 5 分钟", x: 430, y: 60, variant: "brand"}, {id: "deploy", label: "部署", sub: "约 7 分钟", x: 610, y: 60, variant: "success"}]
+edges = [{from: "git", to: "test", label: "推送"}, {from: "test", to: "build", label: "通过"}, {from: "build", to: "deploy", label: "镜像就绪"}]
+steps = [{label: "① 触发", highlight: ["git"], note: "合并请求通过后自动触发"}, {label: "② 测试", highlight: ["test"], visited: ["git"], note: "单元测试与静态检查并行执行"}, {label: "③ 构建", highlight: ["build"], visited: ["git", "test"], note: "多阶段构建并推送镜像仓库"}, {label: "④ 部署", highlight: ["deploy"], visited: ["git", "test", "build"], note: "滚动更新，失败自动回滚"}]
+st = Steps(["提交", "测试", "构建", "部署"], 2)
+ft = FileTree("流水线配置变更", [{path: ".ci/pipeline.yml", status: "modified"}, {path: ".ci/steps/test.sh", status: "added"}])
+note = Callout("优化空间", "测试阶段占比最高，可把静态检查拆到独立并行任务，预计总时长可降至 14 分钟。", "info")

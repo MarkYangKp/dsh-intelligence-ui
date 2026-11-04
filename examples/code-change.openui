@@ -1,0 +1,5 @@
+root = Stack([hd, files, diff, checks], "column", 12)
+hd = Heading("修复 id 变化时的竞态：改动 2 个文件", 2)
+files = FileTree("变更文件", [{"path": "src/hooks/useUser.js", "status": "modified"}, {"path": "src/hooks/useUser.test.js", "status": "added"}])
+diff = Diff("src/hooks/useUser.js", "@@ -3,7 +3,12 @@\n-  useEffect(() => {\n-    fetch(`/api/users/${id}`).then(r => r.json()).then(setUser)\n-  }, [])\n+  useEffect(() => {\n+    const ctrl = new AbortController()\n+    fetch(`/api/users/${id}`, { signal: ctrl.signal })\n+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json() })\n+      .then(setUser)\n+    return () => ctrl.abort()\n+  }, [id])")
+checks = Checklist("验收项", [{"text": "id 变化触发重新请求", "status": "done"}, {"text": "快速切换无竞态覆盖", "status": "done"}, {"text": "错误与加载态可区分", "status": "todo"}])

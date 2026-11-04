@@ -1,0 +1,3 @@
+root = Stack([js, py], "column", 12)
+js = CodeBlock("const user = { id: 1, name: \"Ada\" }\n\n// 查询并问候\nfunction greet(u) {\n  return `Hi ${u.name}`\n}\n\nexport default greet", "js", "src/greet.js")
+py = CodeBlock("def greet(name: str) -> str:\n    # 问候语\n    return f\"Hi {name}\"\n\nif __name__ == \"__main__\":\n    print(greet(\"Ada\"))", "python", "greet.py")

@@ -1,0 +1,6 @@
+root = Stack([h, q, st, tl, note], "column", 12)
+h = Heading("一次完整的需求交付流程", 2)
+q = Quote("流程的价值在于让不确定性提前暴露。", "团队协作手册")
+st = Steps(["需求澄清", "方案评审", "开发联调", "灰度验证", "全量上线"], 2)
+tl = Timeline([{title: "第 1 天", description: "需求澄清，确认验收标准与范围", variant: "info"}, {title: "第 3 天", description: "方案评审，识别技术风险", variant: "brand"}, {title: "第 5–8 天", description: "开发与联调，每日同步进度", variant: "default"}, {title: "第 9 天", description: "灰度 10%，观察 24 小时", variant: "warning"}, {title: "第 10 天", description: "全量上线并复盘", variant: "success"}])
+note = Callout("常见误区", "把评审当成走过场：评审的目标是发现「不能按计划上线」的理由，而不是确认进度。", "info")

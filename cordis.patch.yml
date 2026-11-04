@@ -1,0 +1,7 @@
+# Intelligence UI: a single bundle that ships both halves of the plugin.
+# One `insert` row covers the host half (index.js: prompt modules + component catalogue)
+# and the browser half (./client: registers the assistant-step renderer at priority -20,
+# taking precedence over the host's default renderer and earlier OpenUI plugins).
+- insert:
+    - id: intelligence-ui
+      name: dsh-intelligence-ui

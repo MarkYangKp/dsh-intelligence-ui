@@ -1,0 +1,7 @@
+root = Stack([h, sub, bullets, kv, code, note], "column", 12)
+h = Heading("文本组件速查", 1)
+sub = TextContent("正文默认 md；需要强调时用 weight，而不是全大写。", "small")
+bullets = BulletList(["Heading 只定义标题层级，不承载段落", "TextContent 承载正文与说明", "KeyValue 适合属性清单", "CodeBlock 保留原始缩进"], false)
+kv = KeyValue([{label: "正文基准", value: "14px"}, {label: "小号正文", value: "12px"}, {label: "标题层级", value: "H1 / H2 / H3"}], 3)
+code = CodeBlock("const title = '清楚比华丽更重要'\nconsole.log(title)", "js", "示例代码")
+note = Callout("可读性优先", "正文不要用浅灰；颜色层级只用于区分主次，不用于装饰。", "info")

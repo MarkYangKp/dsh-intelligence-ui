@@ -1,0 +1,12 @@
+root = Stack([h, kpis, pie, heat, tbl, segs, note], "column", 12)
+h = Heading("用户分群：高价值用户贡献 46% 收入", 2)
+kpis = Grid([k1, k2, k3], 3, 12, 150)
+k1 = StatCard("近 90 天活跃用户", "31,500", "较上季度 +4.2%", "up", "👥", "去重口径", "brand")
+k2 = StatCard("高价值分层", "5,888", "贡献 46% 收入", "up", "💎", null, "success")
+k3 = StatCard("分层流失风险", "1,204", "连续 30 天未活跃", "down", "⚠️", null, "warning")
+segments = [{"name": "高价值活跃", "value": "5,888 人"}, {"name": "稳定复购", "value": "9,412 人"}, {"name": "价格敏感", "value": "6,208 人"}, {"name": "新注册未转化", "value": "9,992 人"}]
+segs = @Each(segments, "s", KeyValue([{label: s.name, value: s.value}], 1))
+pie = PieChart("用户分层占比", [{label: "高价值活跃", value: 5888}, {label: "稳定复购", value: 9412}, {label: "价格敏感", value: 6208}, {label: "新注册未转化", value: 9992}], true)
+heat = Heatmap("近 8 周各分层活跃度", [{label: "W1", value: 4}, {label: "W2", value: 5}, {label: "W3", value: 6}, {label: "W4", value: 5}, {label: "W5", value: 7}, {label: "W6", value: 6}, {label: "W7", value: 8}, {label: "W8", value: 7}], 4, 18)
+tbl = SearchTable("分层明细", ["分层", "人数", "贡献收入"], [{"分层": "高价值活跃", "人数": 5888, "贡献收入": "46%"}, {"分层": "稳定复购", "人数": 9412, "贡献收入": "31%"}, {"分层": "价格敏感", "人数": 6208, "贡献收入": "17%"}, {"分层": "新注册未转化", "人数": 9992, "贡献收入": "6%"}], "搜索分层…", "没有匹配的分层")
+note = Callout("运营建议", "对「稳定复购」中的低频用户做定向券投放，比直接对「价格敏感」分层降价更划算。", "success")

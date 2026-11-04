@@ -1,0 +1,12 @@
+root = Stack([h, top, rankList, more, note], "column", 12)
+h = Heading("本周内容热度榜", 2)
+top = Grid([s1, s2, s3], 3, 12, 140)
+s1 = StatCard("榜首阅读量", "12.8 万", "《如何写清楚一份周报》", "up", "🥇", null, "brand")
+s2 = StatCard("榜单总阅读量", total + " 次", "共 5 篇入榜内容", "up", "📚", null, "success")
+s3 = StatCard("平均读完率", "72.4%", "+5.1pp", "up", "📖", null, "success")
+posts = [{"title": "如何写清楚一份周报", "views": 128000}, {"title": "一次线上故障的复盘方法", "views": 96000}, {"title": "数据可视化的三个误区", "views": 74000}, {"title": "从零搭建监控体系", "views": 52000}, {"title": "接口设计的十条经验", "views": 38000}]
+total = @Sum([128000, 96000, 74000, 52000, 38000])
+sorted = @Sort(posts, "views", "desc")
+rankList = @Each(sorted, "p", Row([Text(p["title"], "sm", "medium"), Text(p["views"] + " 次阅读", "sm", "normal", "tertiary")], 8, "center"))
+more = Row([Link("查看完整榜单", "#ranking"), Text("统计口径：自然周去重阅读", "sm", "normal", "tertiary")], 10, "center")
+note = Callout("观察", "前三名都是方法论类内容，说明读者更关注「怎么做」而不是「是什么」。", "success")

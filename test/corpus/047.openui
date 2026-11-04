@@ -1,0 +1,7 @@
+root = Stack([h, seg, tabs, acc, buttons, note], "column", 12)
+h = Heading("交互组件：只在有真实用途时使用", 2)
+seg = SegmentedControl([{label: "按天", content: Chart("日订单量", "bar", [{name: "订单", values: [820, 932, 901, 934, 1290, 1330, 1320]}], [], ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], 180)}, {label: "按周", content: Chart("周订单量", "bar", [{name: "订单", values: [6420, 7180, 6890, 7520]}], [], ["W1", "W2", "W3", "W4"], 180)}], 0)
+tabs = Tabs([{label: "说明", content: TextContent("分段控件适合少量互斥视图的切换。", "sm")}, {label: "参数", content: KeyValue([{label: "默认选中", value: "第一项"}, {label: "最多项数", value: "建议不超过 4 项"}], 1)}], 1)
+acc = Accordion([{title: "什么时候不该用 Tabs", content: TextContent("内容需要同时对比时，Tabs 会隐藏信息，改用并排布局。", "sm")}, {title: "什么时候不该用 Accordion", content: TextContent("关键结论不应默认折叠，读者可能永远不展开。", "sm")}])
+buttons = Row([Button(label: "导出数据", action: "export-data", variant: "primary"), Button(label: "重置筛选", action: "reset-filter", variant: "ghost")], 8, "center")
+note = Callout("克制的交互", "交互控件越多，界面越难维护；先确认用户真的会操作，再添加控件。", "info")

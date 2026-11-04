@@ -1,0 +1,9 @@
+root = Stack([h, sub, t, rows, st, code, kv, note], "column", 12)
+h = Heading("订单域数据字典（节选）", 2)
+sub = TextContent("字段命名统一使用下划线风格，金额类字段单位为分。", "sm", true)
+t = Table("字段说明", ["字段", "类型", "含义", "示例"], rows, true)
+rows = [{"字段": "order_id", "类型": "string", "含义": "订单唯一标识", "示例": "ORD-20260918-0001"}, {"字段": "user_id", "类型": "string", "含义": "下单用户标识", "示例": "U-88213"}, {"字段": "total_amount", "类型": "integer", "含义": "订单总额（分）", "示例": "12800"}, {"字段": "status", "类型": "enum", "含义": "订单状态", "示例": "paid"}]
+st = SearchTable("字段检索", ["字段", "类型", "所属表"], [{"字段": "order_id", "类型": "string", "所属表": "orders"}, {"字段": "total_amount", "类型": "integer", "所属表": "orders"}, {"字段": "refund_status", "类型": "enum", "所属表": "refunds"}], "搜索字段…", "没有匹配字段")
+code = CodeBlock("SELECT order_id, total_amount\nFROM orders\nWHERE status = 'paid'\n  AND created_at >= :start", "sql", "常用查询")
+kv = KeyValue([{label: "更新频率", value: "订单状态变更实时更新"}, {label: "保留周期", value: "明细保留 3 年"}], 2)
+note = Callout("约定", "金额统一用整数分存储，展示层再做格式化，避免浮点误差。", "warning")

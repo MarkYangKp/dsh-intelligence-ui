@@ -1,0 +1,6 @@
+root = Stack([hd, findings, rows, code, ok], "column", 12)
+hd = Heading("代码审查：三个缺陷叠加，建议合并前修复", 2)
+findings = Table("问题清单", ["问题", "后果", "修复"], rows)
+rows = [{"问题": "依赖数组为 []", "后果": "参数变化不重新请求", "修复": "依赖改为 [id]"}, {"问题": "无竞态取消", "后果": "旧响应覆盖新数据", "修复": "AbortController + cleanup"}, {"问题": "未检查 r.ok", "后果": "错误体被当成数据", "修复": "!r.ok 时 throw"}]
+code = CodeBlock("useEffect(() => {\n  const ctrl = new AbortController()\n  fetch(url, { signal: ctrl.signal }).then(...)\n  return () => ctrl.abort()\n}, [id])", "jsx", "修复骨架")
+ok = Callout("建议", "合并前补上 loading/error 状态；多处复用时改用 React Query。", "warning")

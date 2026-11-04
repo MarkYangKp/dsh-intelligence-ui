@@ -1,0 +1,9 @@
+root = Stack([h, d, cap, st, note], "column", 12)
+h = Heading("实时数据管道：从业务库到分析仓", 2)
+d = Diagram(title: "采集 → 清洗 → 聚合 → 分析", width: 640, height: 250, nodes: nodes, edges: edges, steps: steps)
+nodes = [{id: "src", label: "业务库", sub: "binlog 订阅", x: 80, y: 60, variant: "info"}, {id: "etl", label: "清洗任务", sub: "去重 · 补全", x: 240, y: 60, variant: "brand"}, {id: "agg", label: "聚合层", sub: "小时级汇总", x: 400, y: 60, variant: "brand"}, {id: "dw", label: "分析仓", sub: "对外查询入口", x: 560, y: 60, variant: "success"}, {id: "sched", label: "调度器", sub: "每 5 分钟", x: 240, y: 180, variant: "warning"}]
+edges = [{from: "src", to: "etl", label: "增量"}, {from: "etl", to: "agg", label: "明细"}, {from: "agg", to: "dw", label: "汇总"}, {from: "sched", to: "etl", label: "触发", dashed: true}]
+steps = [{label: "① 采集", highlight: ["src"], note: "订阅业务库变更日志，按主键去重"}, {label: "② 清洗", highlight: ["etl"], visited: ["src"], note: "校验字段类型，补全缺失维度"}, {label: "③ 聚合", highlight: ["agg"], visited: ["src", "etl"], note: "按小时与渠道汇总指标"}, {label: "④ 对外服务", highlight: ["dw"], visited: ["src", "etl", "agg"], note: "分析仓对外提供只读查询"}]
+cap = TextContent("实线表示数据流，虚线表示调度触发。分析仓是唯一对外查询入口，原始明细保留 30 天。", "sm", true)
+st = Steps(["采集", "清洗", "聚合", "对外服务"], 3)
+note = Callout("扩容提示", "当清洗任务积压超过 10 分钟时，优先水平扩容消费实例，而不是缩短调度周期。", "info")

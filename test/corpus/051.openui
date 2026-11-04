@@ -1,0 +1,12 @@
+root = Stack([h, kpis, chart, cmp, tbl, note], "column", 12)
+h = Heading("第 38 周业务周报：收入 84.3 万元，环比 +12.6%", 2)
+kpis = Grid([k1, k2, k3, k4], 4, 12, 140)
+k1 = StatCard(label: "本周收入", value: "84.3 万元", delta: "+12.6%", trend: "up", icon: "💰", note: "上周 74.9 万元", accent: "brand")
+k2 = StatCard(label: "新增用户", value: "1,204", delta: "+3.1%", trend: "up", icon: "👥", note: null, accent: "success")
+k3 = StatCard(label: "退款率", value: "1.2%", delta: "-0.3pp", trend: "down", icon: "↩️", note: "持续改善", accent: "success")
+k4 = StatCard("渠道数", "4", null, "flat", null, null, "neutral")
+chart = Chart(title: "近 6 周收入", type: "line", series: [{name: "收入（万元）", values: [62, 66, 64, 71, 69, 84]}], labels: ["W33", "W34", "W35", "W36", "W37", "W38"], height: 200, yFormat: "number")
+cmp = ComparisonBar("各渠道收入（万元）", [{label: "小程序", value: 37.2, variant: "brand"}, {label: "App", value: 29.5, variant: "info"}, {label: "Web", value: 12.6}, {label: "其它", value: 5.0}], true, " 万元")
+tbl = Table(title: "周环比明细", columns: ["指标", "本周", "上周", "变化"], data: rows, compact: true)
+rows = [{"指标": "收入", "本周": "84.3 万", "上周": "74.9 万", "变化": "+12.6%"}, {"指标": "新增用户", "本周": "1,204", "上周": "1,168", "变化": "+3.1%"}, {"指标": "退款率", "本周": "1.2%", "上周": "1.5%", "变化": "-0.3pp"}]
+note = Callout("结论", "小程序渠道是本周增长主引擎，增长质量健康；下周建议把预算向小程序投放倾斜 20%。", "success")

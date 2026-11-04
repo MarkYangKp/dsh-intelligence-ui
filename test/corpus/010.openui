@@ -1,0 +1,7 @@
+root = Stack([h, intro, tree, rules, code, note], "column", 12)
+h = Heading("二叉树的三种深度优先遍历", 2)
+intro = TextContent("前中后序的区别只有一个：根节点在什么时候被访问；左右子树的相对顺序始终是先左后右。", "md")
+tree = TreeView("示例树（可切换四种遍历）", [1, 2, 3, 4, 5, null, 6], ["pre", "in", "post", "level"], 240)
+rules = KeyValue([{label: "前序", value: "根 → 左 → 右"}, {label: "中序", value: "左 → 根 → 右"}, {label: "后序", value: "左 → 右 → 根"}], 1)
+code = CodeBlock("def walk(node):\n    if node is None:\n        return\n    # 此处访问根节点\n    walk(node.left)\n    walk(node.right)", "python", "递归骨架")
+note = Callout("记忆技巧", "把「根」放在访问序列的三个位置之一，就能得到三种遍历；层序遍历则用队列逐层处理。", "info")

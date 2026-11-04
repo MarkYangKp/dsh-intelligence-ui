@@ -1,0 +1,100 @@
+{
+  "name": "dsh-intelligence-ui",
+  "version": "1.1.0",
+  "description": "Generative UI for DeepSeek Harness: render assistant replies as adaptive, interactive interfaces — native OpenUI fences plus automatic compilation of structured Markdown into cards, tables and charts.",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib/client.js",
+    "src",
+    "build.mjs",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CODE_OF_CONDUCT.md",
+    "RELEASING.md",
+    "docs",
+    "examples",
+    "scripts"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-chat"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=20",
+    "dsh": ">=0.2.1-rc.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "MarkYangKp",
+    "url": "https://github.com/MarkYangKp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarkYangKp/dsh-intelligence-ui.git"
+  },
+  "homepage": "https://github.com/MarkYangKp/dsh-intelligence-ui#readme",
+  "bugs": {
+    "url": "https://github.com/MarkYangKp/dsh-intelligence-ui/issues"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "openui",
+    "openui-lang",
+    "generative-ui",
+    "adaptive-ui",
+    "chat-ui",
+    "llm",
+    "plugin"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node build.mjs && node test/smoke.mjs && node test/browser-test.mjs && node test/corpus-test.mjs && node test/compiler-test.mjs && node test/adversarial-test.mjs && node test/theme-test.mjs && node test/token-test.mjs && node test/prompt-test.mjs && node test/budget-test.mjs && node test/chart-test.mjs",
+    "test:design": "node test/measure.mjs",
+    "gallery": "node test/gallery.mjs",
+    "test:interact": "node test/interact-test.mjs",
+    "test:browser": "node test/browser-test.mjs",
+    "preview": "node test/preview.mjs --name agent --theme both",
+    "shot": "node build.mjs && node test/shot.mjs docs",
+    "test:docs": "node scripts/check-docs.mjs",
+    "test:unit": "node build.mjs && node test/smoke.mjs && node test/corpus-test.mjs && node test/compiler-test.mjs && node test/adversarial-test.mjs && node test/theme-test.mjs && node test/token-test.mjs && node test/prompt-test.mjs && node test/budget-test.mjs && node test/chart-test.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:links": "node scripts/check-docs.mjs"
+  },
+  "devDependencies": {
+    "@openuidev/lang-core": "^1.0.2",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.9.10",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^4.6.7"
+  },
+  "packageManager": "pnpm@12.8.1",
+  "private": true
+}

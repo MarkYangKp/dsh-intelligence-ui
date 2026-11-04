@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <style>
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    </style>
+    <div id="root"></div>
+    <script src="bundle.js"></script>
+    <script>
+      function report(o) {
+        var rep = document.createElement('pre')
+        rep.id = 'report'
+        rep.textContent = 'REPORT:' + JSON.stringify(o)
+        document.body.appendChild(rep)
+      }
+      setTimeout(function () {
+        try {
+          var svgs = [].slice.call(document.querySelectorAll('svg'))
+          var buttons = [].slice.call(document.querySelectorAll('button'))
+          var mapBtn = buttons.filter(function (b) {
+            return b.textContent.indexOf('个点') >= 0
+          })[0]
+          var before = svgs[0] ? Math.round(svgs[0].getBoundingClientRect().height) : -1
+          if (!mapBtn) {
+            report({
+              error: 'no map toggle',
+              buttons: buttons.map(function (b) {
+                return b.textContent
+              })
+            })
+            return
+          }
+          mapBtn.click()
+          setTimeout(function () {
+            var after = svgs[0] ? Math.round(svgs[0].getBoundingClientRect().height) : -1
+            var el = document.querySelector('svg')
+            report({
+              found: true,
+              before: before,
+              after: after,
+              expanded: after > before * 1.2,
+              label: mapBtn.textContent,
+              svgStyle: el.getAttribute('style'),
+              computed: getComputedStyle(el).height,
+              rect: el.getBoundingClientRect().height,
+              parentH: el.parentElement.getBoundingClientRect().height,
+              buttons: buttons.map(function (b) {
+                return b.textContent
+              })
+            })
+          }, 800)
+        } catch (e) {
+          report({ error: String(e) })
+        }
+      }, 600)
+    </script>
+  </body>
+</html>

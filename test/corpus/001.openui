@@ -1,0 +1,11 @@
+root = Stack([hd, kpis, trend, tbl, rows, note], "column", 12)
+hd = Heading("第三季度经营回顾：收入 2,840 万元，环比增长 12.6%", 2)
+kpis = Grid([k1, k2, k3, k4], 4, 12, 150)
+k1 = StatCard(label="季度收入", value="2,840 万元", delta="+12.6%", trend="up", icon="💰", note="含税口径", accent="brand")
+k2 = StatCard(label="订单量", value="18.6 万单", delta="+8.2%", trend="up", icon=null, note=null, accent="success")
+k3 = StatCard(label="客单价", value="152.7 元", delta="-2.1%", trend="down", icon=null, note="环比小幅回落", accent="warning")
+k4 = StatCard("复购率", "38.4%", "+1.8pp", "up", "🔁", null, "success")
+trend = Chart(title="近 12 个月收入走势", type="area", series=[{name: "收入（万元）", values: [198, 212, 224, 218, 236, 251, 244, 262, 255, 271, 258, 284]}], labels=["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], height=220, yFormat="number")
+tbl = Table(title="分渠道收入", columns=["渠道", "收入（万元）", "占比"], data=rows, compact=true, striped=true)
+rows = [{"渠道": "小程序", "收入（万元）": 1248, "占比": "43.9%"}, {"渠道": "App", "收入（万元）": 986, "占比": "34.7%"}, {"渠道": "Web", "收入（万元）": 402, "占比": "14.2%"}, {"渠道": "其它", "收入（万元）": 204, "占比": "7.2%"}]
+note = Callout("结论", "收入增长主要由小程序渠道拉动；客单价小幅回落但复购率提升，说明用户结构在变得更健康。", "success")

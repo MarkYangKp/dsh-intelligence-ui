@@ -1,0 +1,7 @@
+root = Stack([h, sub, list, note], "column", 12)
+h = Heading("本周值班排班表", 2)
+sub = TextContent("按计划工时从高到低排序，夜班单独标注补贴。", "sm", true)
+rows = [{"小组": "网关组", "班次": "早班", "工时": 8, "人数": 3}, {"小组": "订单组", "班次": "中班", "工时": 6, "人数": 2}, {"小组": "支付组", "班次": "夜班", "工时": 10, "人数": 2}, {"小组": "数据组", "班次": "早班", "工时": 4, "人数": 1}]
+sorted = @Sort(rows, "工时", "desc")
+list = @Each(sorted, "r", Row([Badge(r["班次"], "info"), Text(r["小组"], "sm", "medium"), Text(r["工时"] + " 小时 · " + r["人数"] + " 人", "sm", "normal", "secondary")], 10, "center"))
+note = Callout("排班规则", "夜班连续不超过两天；同一小组不得同时承担早班与夜班。", "info")

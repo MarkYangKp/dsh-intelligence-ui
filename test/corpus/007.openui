@@ -1,0 +1,12 @@
+root = Stack([hd, kpis, map, cmp, note], "column", 12)
+hd = Heading("门店网络：华东四城贡献 68% 营收", 2)
+kpis = Grid([k1, k2, k3], 3, 12, 150)
+k1 = StatCard("覆盖城市", "12", "华东四城为主", "flat", "📍", null, "brand")
+k2 = StatCard("门店总数", "86", "+9 家环比", "up", "🏬", null, "success")
+k3 = StatCard("平均坪效", "4.2 万元/㎡", "高于行业 18%", "up", "📈", "年化口径", "success")
+map = Map("华东门店分布（点大小=季度营收）", points, links, bbox, 280, true)
+points = [{lat: 31.23, lon: 121.47, label: "上海", value: 4200}, {lat: 30.27, lon: 120.15, label: "杭州", value: 2100}, {lat: 32.06, lon: 118.80, label: "南京", value: 1400}, {lat: 31.30, lon: 120.62, label: "苏州", value: 900}]
+links = [[0, 1], [0, 2], [1, 3]]
+bbox = [116, 28, 124, 35]
+cmp = ComparisonBar("各城市季度营收（万元）", [{label: "上海", value: 4200, variant: "brand"}, {label: "杭州", value: 2100, variant: "info"}, {label: "南京", value: 1400}, {label: "苏州", value: 900}], true, " 万元")
+note = Callout("下一步", "苏州坪效接近杭州，建议优先在苏州补 3 家店；南京以社区店为主，暂缓扩张。", "info")

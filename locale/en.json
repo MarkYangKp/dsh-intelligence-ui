@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Intelligence UI",
+    "description": "Uniform rendering pipeline for agent replies: native OpenUI fences render directly, structured Markdown (tables, metrics, steps) auto-compiles into cards, tables and charts. Design system v3: DSH ink typography, a single business-blue accent, precise hairline hierarchy."
+  }
+}

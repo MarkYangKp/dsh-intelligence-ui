@@ -1,0 +1,47 @@
+name: Feature request
+description: Suggest a new component, behaviour, or developer experience improvement
+title: '[feat] '
+labels: ['enhancement', 'needs triage']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Describe the content or workflow that the current UI cannot express well.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Component API sketch, rendering example, or workflow change.
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of change
+      options:
+        - New component
+        - New props / behaviour on an existing component
+        - Design system / visual quality
+        - Prompt engineering
+        - Compiler (Markdown → UI)
+        - Tooling / testing / docs
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked that this does not break the existing OpenUI program API (schema compatibility)
+          required: false
+        - label: I am willing to open a pull request for this
+          required: false

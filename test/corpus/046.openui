@@ -1,0 +1,8 @@
+root = Stack([h, d, ft, tv, map, note], "column", 12)
+h = Heading("结构与关系组件速查", 2)
+d = Diff("src/example.ts", "--- a/src/example.ts\n+++ b/src/example.ts\n@@ -1,2 +1,2 @@\n-const timeout = 3000\n+const timeout = 5000")
+ft = FileTree("文件树示例", [{path: "src/index.ts", status: "modified"}, {path: "src/utils/format.ts", status: "added"}, {path: "src/legacy/old.ts", status: "deleted"}])
+tv = TreeView("层序遍历演示", [1, 2, 3, 4, 5, null, 6], "level", 220)
+map = Map("示例地理分布", points, [[0, 1], [1, 2]], [110, 20, 130, 45], 240, false)
+points = [{lat: 39.9, lon: 116.4, label: "节点一", value: 42}, {lat: 31.2, lon: 121.5, label: "节点二", value: 28}, {lat: 23.1, lon: 113.3, label: "节点三", value: 14}]
+note = Callout("使用场景", "流程与层级用 Diagram/TreeView，文件变更用 Diff/FileTree，地域分布用 Map。", "info")
