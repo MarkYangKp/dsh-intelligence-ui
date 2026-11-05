@@ -6,6 +6,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.1] — 2026-11-05
+
+### Fixed
+
+- Thinking bodies and assistant message images were replaced by the "内容暂时无法显示" fallback on
+  DeepSeek Harness `0.2.1-rc.5`: the host stopped injecting `renderSlot` into renderers that
+  replace an already-declared renderer (replacement entries cannot re-declare the official child
+  slots), so expanding a reasoning row threw `TypeError` inside the render boundary. The
+  reasoning body and image gallery now render through the host's stable factories
+  (`conversation.chat.reasoning.content`, `conversation.images.content`) with a local compact
+  Markdown fallback, and the render boundary logs one diagnostic line when it has to degrade.
+- `<signature>…</signature>` reasoning payloads are stripped before display, matching the host
+  renderer, and a signature-only reasoning block now collapses instead of leaving a blank row.
+
 ## [1.1.0] — 2026-11-04
 
 The first public release of the plugin; this entry also covers the repository work done while

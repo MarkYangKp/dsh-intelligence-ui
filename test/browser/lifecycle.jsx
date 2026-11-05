@@ -114,6 +114,59 @@ async function run() {
     host.textContent.includes('message-sibling') && host.querySelector('[data-iui-fallback]')
   )
 
+  // DSH 0.2.1-rc.5 起，替换同一 key 的渲染器拿不到 renderSlot（kit 只在注册声明了
+  // children 时注入），展开思维链必须走 renderFactorySlot/本地降级，且不能落到
+  // 「此内容暂时无法显示」。
+  const reasoningProps = () => ({
+    node: {
+      data: {
+        status: 'settled',
+        step: 1,
+        blocks: [{ kind: 'reasoning', text: '推理正文 should-render' }]
+      },
+      location: { kind: 'step', turn: { status: 'closed' } }
+    },
+    useDisclosure: () => ({ expanded: true, toggle: () => {} }),
+    useGroupAction: () => null,
+    useTurnData: () => undefined,
+    fileMentions: () => undefined,
+    usePresentation: (s) => s({ settledReasoningPreview: true }),
+    renderSlot: undefined,
+    renderFactorySlot: (name, input) =>
+      React.createElement('div', { 'data-factory': name }, input.text),
+    t: (k) => k
+  })
+  render(<IntelligenceAssistantNodeView {...reasoningProps()} />)
+  check(
+    '展开思维链走官方 Factory（替换者无 renderSlot 的宿主）',
+    host.textContent.includes('推理正文 should-render') &&
+      Boolean(host.querySelector('[data-factory="conversation.chat.reasoning.content"]')) &&
+      !host.querySelector('[data-iui-fallback]')
+  )
+  const noFactory = reasoningProps()
+  delete noFactory.renderFactorySlot
+  render(<IntelligenceAssistantNodeView {...noFactory} />)
+  check(
+    '宿主无 Factory 时思维链正文本地降级渲染',
+    host.textContent.includes('推理正文 should-render') &&
+      !host.querySelector('[data-iui-fallback]')
+  )
+  const imageProps = reasoningProps()
+  imageProps.node = {
+    data: {
+      status: 'settled',
+      step: 1,
+      blocks: [{ kind: 'image', attachment: { attachmentId: 'image-1' } }]
+    },
+    location: { kind: 'step', turn: { status: 'closed' } }
+  }
+  render(<IntelligenceAssistantNodeView {...imageProps} />)
+  check(
+    '消息图片走官方 Factory（替换者无 renderSlot 的宿主）',
+    Boolean(host.querySelector('[data-factory="conversation.images.content"]')) &&
+      !host.querySelector('[data-iui-fallback]')
+  )
+
   // 用带展开控件的图表做流式稳定性回归（Map 在无数据时不再渲染展开按钮）。
   const source = '```openui\nroot = Chart("stream", "bar", [{name: "x", values: [1, 2, 3]}])'
   render(message(source, 'running'))

@@ -1,6 +1,6 @@
 {
   "name": "dsh-intelligence-ui",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Generative UI for DeepSeek Harness: render assistant replies as adaptive, interactive interfaces — native OpenUI fences plus automatic compilation of structured Markdown into cards, tables and charts.",
   "type": "module",
   "main": "./index.js",

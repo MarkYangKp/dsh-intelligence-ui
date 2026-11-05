@@ -15,7 +15,7 @@ DeepSeek Harness（DSH）插件：接管助手消息渲染——模型写的
 
 [English](README.md) · [文档索引](docs/README.md) · [组件参考](docs/COMPONENTS.md) · [设计系统](docs/design.md) · [架构说明](docs/ARCHITECTURE.md) · [画廊（GitHub Pages）](https://markyangkp.github.io/dsh-intelligence-ui/gallery.html) · [亮色](docs/gallery.png) / [暗色](docs/gallery-dark.png) / [窄屏](docs/gallery-mobile.png)
 
-**状态：** v1.1.0 · 44 个组件 · MIT · 明暗主题 · 390/920px · macOS 本地验证，Linux 由 CI 覆盖。
+**状态：** v1.1.1 · 44 个组件 · MIT · 明暗主题 · 390/920px · macOS 本地验证，Linux 由 CI 覆盖。
 
 > 画廊页面需在 GitHub 仓库设置中启用 Pages（步骤见 [RELEASING.md](RELEASING.md)）；PNG 链接可立即查看。
 
@@ -93,7 +93,7 @@ note = Callout("结论", "收入连续三周环比正增长，建议把预算向
    （无需构建：`lib/client.js` 已进仓）。
 3. **把目录装成 bundle** —— 打开 DSH 插件管理器，选择「从本地目录安装 / install bundle」，指向仓库
    根目录。不同 DSH 版本菜单措辞略有差异。
-4. **重启 DSH** 并打开聊天窗口；浏览器控制台应出现 `[dsh-intelligence-ui/1.1.0]`。
+4. **重启 DSH** 并打开聊天窗口；浏览器控制台应出现 `[dsh-intelligence-ui/1.1.1]`。
 5. **把下面的示例原样粘贴**到输入框发送，即可看到界面。
 
 如果第 3 步在你的 DSH 构建里不存在，说明该构建未开放插件 bundle 能力，无法加载本插件；请升级

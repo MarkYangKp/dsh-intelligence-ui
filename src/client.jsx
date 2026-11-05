@@ -21,7 +21,7 @@ import { compileReply } from './compiler.mjs'
 import { RenderBoundary, FallbackNotice } from './render-safety.jsx'
 
 /** 插件版本标记（排障用：页面控制台应打印本行）。 */
-export const IUI_VERSION = 'dsh-intelligence-ui/1.1.0'
+export const IUI_VERSION = 'dsh-intelligence-ui/1.1.1'
 
 /** 自动编译开关：localStorage['dsh-intelligence-ui:disable-auto']='1' 可紧急关闭。 */
 function autoCompileEnabled() {
@@ -289,16 +289,43 @@ function latestCompletedParagraphFirstLine(text) {
   }
 }
 
-/** 推理披露行：可展开，展开体走官方 conversation.chat.reasoning.body 插槽。 */
+/**
+ * 剥离私有签名字段：DSH 会把 <signature>…</signature> 包在推论文本前，
+ * 那部分不应展示。移植自宿主的 reasoningText()（0.2.1-rc.5）。
+ * @param {string} text 原始推理文本
+ * @returns {string} 可展示文本；仅剩签名时为空串
+ */
+function reasoningText(text) {
+  if (typeof text !== 'string' || text[0] !== '<') return typeof text === 'string' ? text : ''
+  const opening = '<signature>'
+  if (opening.startsWith(text)) return ''
+  if (!text.startsWith(opening)) return text
+  const end = text.indexOf('</signature>', 11)
+  if (end === -1) return ''
+  let start = end + 12
+  while (start < text.length) {
+    if (text[start] === '\n') start++
+    else if (text[start] === '\r' && text[start + 1] === '\n') start += 2
+    else break
+  }
+  return text.slice(start)
+}
+
+/** 推理披露行：可展开，展开体优先走宿主推理内容 Factory，宿主不提供时本地渲染。 */
 const ReasoningRow = memo(function ReasoningRow({
-  text,
+  text: rawText,
   running,
   usePresentation,
   useDisclosure,
-  renderSlot,
+  renderReasoningBody,
+  labels,
   t
 }) {
   const { expanded, toggle } = useDisclosure()
+  const { text, hidden } = useMemo(() => {
+    const normalized = reasoningText(rawText)
+    return { text: normalized, hidden: normalized !== rawText && normalized.trim() === '' }
+  }, [rawText])
   const summaryText = running ? latestCompletedParagraphFirstLine(text) : firstLine(text)
   const summary = useMemo(() => summaryText.replaceAll('**', ''), [summaryText])
   const preview = usePresentation(
@@ -320,12 +347,11 @@ const ReasoningRow = memo(function ReasoningRow({
   const content = useMemo(
     () =>
       expanded ? (
-        <div className="dsh-iui-think-body">
-          {renderSlot('conversation.chat.reasoning.body', { text, running })}
-        </div>
+        <div className="dsh-iui-think-body">{renderReasoningBody({ text, running, labels })}</div>
       ) : undefined,
-    [expanded, renderSlot, running, text]
+    [expanded, labels, renderReasoningBody, running, text]
   )
+  if (hidden) return null
   return (
     <div
       className="dsh-iui-reasoning"
@@ -536,6 +562,7 @@ const AssistantNodeContent = memo(function AssistantNodeContent({
   fileMentions,
   usePresentation,
   renderSlot,
+  renderFactorySlot,
   t
 }) {
   const data = node.data
@@ -578,6 +605,56 @@ const AssistantNodeContent = memo(function AssistantNodeContent({
   const revealProcess = useCallback(() => {
     turnProcess?.setOpen(true)
   }, [turnProcess])
+
+  // 宿主 0.2.1-rc.5 起，替换同一 key 的渲染器不会再拿到 renderSlot：`renderSlot`
+  // 只为「自己声明了 children」的注册注入（ui-renderer 的 standardKit），而替换者
+  // 无法重复声明官方已声明的子插槽（SlotCore.register 会抛 already declared）。
+  // 所以推理正文与消息图片优先走官方 Factory 路径，宿主不提供时再本地降级。
+  const renderReasoningBody = useCallback(
+    ({ text, running: reasoningRunning, labels: reasoningLabels }) => {
+      if (typeof renderSlot === 'function') {
+        return renderSlot('conversation.chat.reasoning.body', {
+          text,
+          rawText: text,
+          running: reasoningRunning
+        })
+      }
+      const fallback = (
+        <MarkdownText
+          text={text}
+          streaming={reasoningRunning}
+          labels={reasoningLabels}
+          variant="compact"
+        />
+      )
+      if (typeof renderFactorySlot === 'function') {
+        return renderFactorySlot(
+          'conversation.chat.reasoning.content',
+          { text, running: reasoningRunning },
+          { fallback }
+        )
+      }
+      return fallback
+    },
+    [renderFactorySlot, renderSlot]
+  )
+
+  const renderMessageImages = useCallback(
+    (images) => {
+      if (typeof renderSlot === 'function') {
+        return renderSlot('conversation.chat.message.images', { images, loadImage, align: 'start' })
+      }
+      if (typeof renderFactorySlot === 'function') {
+        return renderFactorySlot(
+          'conversation.images.content',
+          { images, loadImage, align: 'start' },
+          { fallback: null }
+        )
+      }
+      return null
+    },
+    [loadImage, renderFactorySlot, renderSlot]
+  )
 
   const streaming = data.status === 'running'
   const interrupted = data.status === 'interrupted'
@@ -629,7 +706,8 @@ const AssistantNodeContent = memo(function AssistantNodeContent({
               running={streaming && i === last}
               usePresentation={usePresentation}
               useDisclosure={useDisclosure}
-              renderSlot={renderSlot}
+              renderReasoningBody={renderReasoningBody}
+              labels={labels}
               t={t}
             />
           </ProcessReasoning>
@@ -647,11 +725,7 @@ const AssistantNodeContent = memo(function AssistantNodeContent({
         }
         rendered.push(
           <Fragment key={start}>
-            {renderSlot('conversation.chat.message.images', {
-              images: group.map(({ attachment }) => ({ attachment })),
-              loadImage,
-              align: 'start'
-            })}
+            {renderMessageImages(group.map(({ attachment }) => ({ attachment })))}
           </Fragment>
         )
         break
@@ -727,7 +801,12 @@ export function apply(ctx) {
   // 'conversation.chat.message.images'）。官方 assistant-step 注册已声明过它们，
   // 重复声明会让 SlotCore.register 抛 "slot ... is already declared"，
   // 导致本插件 entry 激活失败 → web boot 整体 fail → 白屏。
-  // 作为同 key 的替换者，子插槽由官方声明继承，renderSlot 照常可用。
+  //
+  // 也不能再依赖继承来的 renderSlot：DSH 0.2.1-rc.5 的 renderer kit 只在
+  // entry.children 存在时才注入 renderSlot（见 ui-renderer 的 standardKit），
+  // 替换者调用它会得到 undefined 并在展开思维链时抛 TypeError →
+  // RenderBoundary 显示「此内容暂时无法显示」。所以子插槽内容改走官方
+  // Factory 路径（renderFactorySlot，kit 恒定注入），本地再兜一层降级渲染。
   ctx.effect(() =>
     ctx.slots.inject('conversation.chat.node', () =>
       ctx.slots.register(

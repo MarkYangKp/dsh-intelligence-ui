@@ -16,7 +16,7 @@ visual language. Plain text stays plain text.
 
 [中文说明](README.zh-CN.md) · [Docs index](docs/README.md) · [Component reference](docs/COMPONENTS.md) · [Design system](docs/design.md) · [Architecture](docs/ARCHITECTURE.md) · [Gallery (GitHub Pages)](https://markyangkp.github.io/dsh-intelligence-ui/gallery.html) · [Light](docs/gallery.png) / [dark](docs/gallery-dark.png) / [mobile](docs/gallery-mobile.png)
 
-**Status:** v1.1.0 · 44 components · MIT · light/dark themes · 390/920px · macOS tested locally, Linux covered by CI.
+**Status:** v1.1.1 · 44 components · MIT · light/dark themes · 390/920px · macOS tested locally, Linux covered by CI.
 
 > The gallery page is served by GitHub Pages once enabled in the repository settings (see
 > [RELEASING.md](RELEASING.md)); the PNG links work immediately.
@@ -110,7 +110,7 @@ Five minutes from zero to a rendered reply:
    a plugin bundle (choose the install-from-directory / bundle option and point it at the repository
    root). Menu labels vary slightly between DSH versions.
 4. **Restart DSH** and open a chat. The browser console should show
-   `[dsh-intelligence-ui/1.1.0]`.
+   `[dsh-intelligence-ui/1.1.1]`.
 5. **Paste the example below** into a message (as-is, no extra prompt needed) and send it.
 
 If step 3 is unavailable in your DSH build, that build does not expose plugin bundles and cannot

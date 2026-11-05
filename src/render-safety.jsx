@@ -49,6 +49,15 @@ export class RenderBoundary extends React.Component {
   static getDerivedStateFromProps(props, state) {
     return props.resetKey !== state.resetKey ? { failed: false, resetKey: props.resetKey } : null
   }
+  componentDidCatch(error, info) {
+    // A visible fallback is a user-facing failure, so leave one diagnostic trace:
+    // the boundary would otherwise look like a mysterious empty block in reports.
+    try {
+      console.error('[dsh-intelligence-ui] render boundary caught', error, info?.componentStack)
+    } catch {
+      /* no console in some embeddings */
+    }
+  }
   render() {
     return this.state.failed ? (this.props.fallback ?? <FallbackNotice />) : this.props.children
   }
