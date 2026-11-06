@@ -215,6 +215,20 @@ async function run() {
       !host.querySelector('[data-iui-fallback]')
   )
 
+  // DSH 0.2.2-rc.1 起，`fileMentions` 只注入给官方 assistant-step entry 自己的
+  // inject，替换渲染器拿不到这个 prop。最终回答节点（owner 有值）曾直接调用它，
+  // 抛 TypeError 后整块内容被 RenderBoundary 换成「此内容暂时无法显示」。
+  const noMentions = props('final-answer-022')
+  noMentions.node.data.finalNode = { seq: 7 }
+  noMentions.useTurnData = (key) =>
+    key === 'turn-tail' ? { closing: { finalNode: { seq: 7 } } } : undefined
+  delete noMentions.fileMentions
+  render(<IntelligenceAssistantNodeView {...noMentions} />)
+  check(
+    '宿主不注入 fileMentions 时最终回答不降级',
+    host.textContent.includes('final-answer-022') && !host.querySelector('[data-iui-fallback]')
+  )
+
   // 用带展开控件的图表做流式稳定性回归（Map 在无数据时不再渲染展开按钮）。
   const source = '```openui\nroot = Chart("stream", "bar", [{name: "x", values: [1, 2, 3]}])'
   render(message(source, 'running'))

@@ -21,7 +21,7 @@ import { compileReply } from './compiler.mjs'
 import { RenderBoundary, FallbackNotice } from './render-safety.jsx'
 
 /** 插件版本标记（排障用：页面控制台应打印本行）。 */
-export const IUI_VERSION = 'dsh-intelligence-ui/1.1.1'
+export const IUI_VERSION = 'dsh-intelligence-ui/1.1.2'
 
 /** 自动编译开关：localStorage['dsh-intelligence-ui:disable-auto']='1' 可紧急关闭。 */
 function autoCompileEnabled() {
@@ -574,6 +574,10 @@ const AssistantNodeContent = memo(function AssistantNodeContent({
     if (tail?.closing?.finalNode.seq !== data.finalNode.seq) return undefined
     return { turn, seq: data.finalNode.seq, openFile }
   }, [data.finalNode, openFile, tail, turn])
+  // 宿主 0.2.2-rc.1 起，`fileMentions` 只注入给官方 assistant-step entry 自己的
+  // inject；替换同一 key 的渲染器必须自带注入（见 apply）。即便如此，服务缺失或
+  // 抛错也不应让整条回复被 RenderBoundary 换成「此内容暂时无法显示」——
+  // 文件引用只是可选增强，正文必须照常渲染。
   const mentions = useMemo(() => {
     if (owner === undefined || typeof fileMentions !== 'function') return undefined
     try {

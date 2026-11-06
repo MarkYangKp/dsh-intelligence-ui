@@ -6,14 +6,25 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.2] — 2026-11-06
+
 ### Fixed
 
-- Completed replies no longer fall back to "此内容暂时无法显示" when the closing Turn resolves file
-  mentions. The replacement renderer now injects its own session-bound optional file-mention
-  service instead of assuming it inherits the host renderer's injection. Missing or throwing
-  providers degrade to the reply without file-mention enhancements.
-- Added registration-level and React DOM regressions for closing replies and the streaming-to-settled
-  transition, including absent and failing file-mention providers.
+- Assistant **final answers disappeared** on DeepSeek Harness `0.2.2-rc.1`: the host stopped
+  providing the `fileMentions` slot prop to renderers that replace the official `assistant-step`
+  entry (it is now injected only into that entry's own `inject`). Every turn's final assistant
+  node called `fileMentions(owner)` unguarded, threw `TypeError`, and the whole answer was
+  replaced by the "此内容暂时无法显示" fallback — the plugin looked like it was not loaded even
+  though its renderer was armed. The replacement registration now injects its own session-bound
+  optional file-mention service (`chatFileMentions.forClosing`) instead of assuming it inherits
+  the host renderer's injection, and the renderer treats `fileMentions` as optional and degrades
+  to plain Markdown when the provider is absent or throws; interactive and image content is
+  unaffected.
+
+### Tests
+
+- Added registration-level and React DOM regressions for closing replies and the
+  streaming-to-settled transition, including absent and failing file-mention providers.
 
 ## [1.1.1] — 2026-11-05
 
