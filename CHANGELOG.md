@@ -6,6 +6,16 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- A reply whose UI block called `Row([children], "row", 12)` (or `Col` with `"column"`) rendered a
+  visible **"1 个警告" diagnostics panel** under the block and lost the intended `gap`: the
+  direction word — meaningless for `Row`/`Col`, which have no `direction` argument — was bound to
+  the `gap` slot, so the following number was discarded. The tolerant binding layer now drops
+  redundant direction words on `Row`/`Col` and re-binds the remaining arguments in order
+  (`Row([...], "row", 12)` → gap `12`, no diagnostics). The capability prompt now states that
+  `Row`/`Col` have no `direction` argument, so new replies stop producing the pattern.
+
 ## [1.1.2] — 2026-11-06
 
 ### Fixed

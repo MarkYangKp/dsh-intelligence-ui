@@ -62,6 +62,8 @@ fingerprint) and owns the tolerant binding layer:
 - positional arguments are bound in declaration order by default;
 - named arguments written as `=` or `:` are normalised;
 - a value is only relocated to another slot when no slot accepts its type/shape;
+- a redundant direction word on `Row`/`Col` (which have no direction slot) is dropped so the
+  following arguments keep their positions: `Row([...], "row", 12)` → `Row([...], 12)`;
 - bare child elements are wrapped into the `children` array;
 - `None` / `True` / `undefined` literals are normalised;
 - unknown enum synonyms (`column`, `smooth`, `danger`, `small`, …) are mapped;

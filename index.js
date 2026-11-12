@@ -174,6 +174,8 @@ const CAPABILITY = `# OpenUI · 组件能力（Runtime Context）
 Box([children], display?, direction?, gap?, align?, justify?, wrap?, width?, height?, minWidth?, maxWidth?, padding?, margin?, background?, border?, radius?, shadow?, position?, top?, right?, bottom?, left?, overflow?, opacity?)
 Row([children], gap?, align?, justify?, wrap?)
 Col([children], gap?, align?)
+  Row 恒横向、Col 恒纵向：两者都没有 direction 参数，不要把方向词写成
+  Row([...], "row", 12)；要可切换方向时用 Stack([children], direction?, gap?, ...)
 Text(text, size?, weight?, color?, align?, mono?, lineHeight?, transform?, letterSpacing?, truncate?, maxLines?)
   size=数字(px) 或 sm|md|lg|xl · weight=normal|medium|semibold|bold
   color=primary|secondary|tertiary|brand|success|warning|error · align=left|center|right

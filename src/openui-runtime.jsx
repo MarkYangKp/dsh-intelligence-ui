@@ -528,6 +528,23 @@ function wrapChildArgs(name, args) {
   return ['[' + args.slice(0, end).join(', ') + ']', ...args.slice(end)]
 }
 
+// Row/Col 天生就是横向/纵向，schema 里没有 direction 槽位；模型常类比 Stack 写成
+// `Row([children], "row", 12)`。方向词在 Row/Col 的任何槽位都不合法，硬塞进去会
+// 让后面的 gap 错位并弹「警告」面板（用户报障形态）。这里直接丢弃方向词，让剩余
+// 参数重新按序绑定：Row([...], "row", 12) → Row([...], 12)。仅当至少还剩一个参数
+// 时才丢弃，避免把 `Row("row")` 这种把它当子内容的写法一起吃空。
+const REDUNDANT_DIRECTION_COMPONENTS = new Set(['Row', 'Col'])
+const DIRECTION_LITERALS = new Set(['row', 'column', ...Object.keys(ALIAS.direction)])
+
+function stripRedundantDirectionArgs(name, args) {
+  if (!REDUNDANT_DIRECTION_COMPONENTS.has(name) || args.length < 2) return args
+  const kept = args.filter((arg) => {
+    const raw = stringLiteralOf(arg)
+    return raw == null || !DIRECTION_LITERALS.has(raw)
+  })
+  return kept.length === args.length || kept.length === 0 ? args : kept
+}
+
 /**
  * 把命名参数调用重排为位置参数（递归处理嵌套调用），并把裸子元素包成数组。
  * @param {string} code 程序文本
@@ -579,11 +596,17 @@ export function normalizeNamedArgs(code) {
     const inner = code.slice(openIdx + 1, closeIdx)
     const rawArgs = splitArgs(inner)
     // 逐个参数递归归一（嵌套调用）
-    const args = rawArgs.map((a) => {
+    let args = rawArgs.map((a) => {
       const r = normalizeNamedArgs(a)
       if (r.changed) changed = true
       return r.code
     })
+    // Row/Col 的冗余方向词先摘掉，再进入命名/位置绑定（否则 gap 会被挤错位并报警告）
+    const withoutDirection = stripRedundantDirectionArgs(name, args)
+    if (withoutDirection !== args) {
+      args = withoutDirection
+      changed = true
+    }
     const named = args.map((a) => {
       // 同时接受 `name = value` 与 `name: value`（模型常写 JS 对象风格的冒号参数）
       const am = /^([A-Za-z_$][\w$]*)\s*(?:=|:)(?!=|:)\s*([\s\S]+)$/.exec(a)

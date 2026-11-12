@@ -294,6 +294,60 @@ test('无法归位的字符串值不硬塞进可选枚举槽', () => {
   assert.equal(r.errors.length, 0, r.errors.map((e) => e.message).join(' // '))
 })
 
+// —— 模型输出形态回归:Row/Col 没有 direction 槽位，模型常类比 Stack 写成 ——
+// `Row([...], "row", 12)` → 旧行为把 "row" 塞进 gap 槽并弹「1 个警告」面板，
+// 后面的 12 被静默丢弃（用户报障形态）。方向词应被丢弃，12 重新落回 gap。
+const realDirectionCase = `root = Stack([
+  Row([
+    StatCard("处理前", "1.8 GB", note="原始导出"),
+    StatCard("处理后", "240 MB", delta="-86.7%", trend="down", note="压缩产物")
+  ], "row", 12),
+  Divider(),
+  KeyValue([
+    {label: "内容完整度", value: "记录条数不变"},
+    {label: "校验方式", value: "逐条比对哈希"}
+  ], 2)
+])`
+test('Row 冗余方向词被丢弃且 gap 归位(回归语料)', () => {
+  const r = evaluateProgram(realDirectionCase)
+  assert.equal(r.errors.length, 0, r.errors.map((e) => e.message).join(' // '))
+  const row = r.root.props.children.find((c) => c && c.typeName === 'Row')
+  assert.equal(row.props.gap, 12)
+  assert.equal(row.props.align, 'stretch')
+  const cards = row.props.children.filter((c) => c && c.typeName === 'StatCard')
+  assert.equal(cards.length, 2)
+  assert.equal(cards[0].props.label, '处理前')
+  assert.equal(cards[1].props.delta, '-86.7%')
+  assert.ok(JSON.stringify(r.root).includes('原始导出'), 'note 应绑定')
+})
+test('Col 冗余方向词同样被丢弃', () => {
+  const r = evaluateProgram('root = Col([TextContent("a"), TextContent("b")], "column", 16)')
+  assert.equal(r.errors.length, 0, r.errors.map((e) => e.message).join(' // '))
+  assert.equal(r.root.props.gap, 16)
+})
+test('方向词别名(flex-row)同样被丢弃', () => {
+  const r = evaluateProgram('root = Row([TextContent("a"), TextContent("b")], "flex-row", 14)')
+  assert.equal(r.errors.length, 0, r.errors.map((e) => e.message).join(' // '))
+  assert.equal(r.root.props.gap, 14)
+})
+test('Row 只有方向词时回退默认间距且不报警告', () => {
+  const r = evaluateProgram('root = Row([TextContent("a"), TextContent("b")], "row")')
+  assert.equal(r.errors.length, 0, r.errors.map((e) => e.message).join(' // '))
+  assert.equal(r.root.props.gap, 8)
+})
+test('Row 方向词后接合法 align 仍按序绑定', () => {
+  const r = evaluateProgram('root = Row([TextContent("a")], "row", "center", 10)')
+  assert.equal(r.errors.length, 0, r.errors.map((e) => e.message).join(' // '))
+  assert.equal(r.root.props.gap, 10)
+  assert.equal(r.root.props.align, 'center')
+})
+test('Stack 的合法 direction 不被方向词容错误删', () => {
+  const r = evaluateProgram('root = Stack([TextContent("a")], "row", 18)')
+  assert.equal(r.errors.length, 0, r.errors.map((e) => e.message).join(' // '))
+  assert.equal(r.root.props.direction, 'row')
+  assert.equal(r.root.props.gap, 18)
+})
+
 // —— 默认形状绑定不许破坏合法的声明顺序位置参数（回归语料:Map links / TreeView traversals） ——
 test('嵌套数组与联合枚举数组按声明顺序入槽', () => {
   const map = evaluateProgram(
@@ -324,6 +378,22 @@ test('真实回复围栏不再渲染 weight 警告面板', () => {
     '关键路径对比：\n\n```openui\n' + realWeightCase + '\n```\n\n- 结论：预取码后耗时 40ms。'
   )
   assert.match(html, /放行/)
+  assert.doesNotMatch(html, /个警告/)
+  assert.doesNotMatch(html, /data-iui-fallback|解析失败/)
+})
+
+// 用户报障的端到端形态（会话回归）：回复末尾的界面块写成 Row([...], "row", 12)，
+// 卡片正常渲染、间距为 12、下方不出现「1 个警告」诊断面板。
+test('真实回复围栏不再渲染 Row 方向词警告面板', () => {
+  const html = message(
+    '压缩完成 ✅ 产物已保存到同一目录。\n\n```openui\n' +
+      realDirectionCase +
+      '\n```\n\n**为什么变小**：按实际显示尺寸重采样后重新编码。'
+  )
+  assert.match(html, /data-openui/)
+  assert.match(html, /处理前/)
+  assert.match(html, /处理后/)
+  assert.match(html, /gap:12px/)
   assert.doesNotMatch(html, /个警告/)
   assert.doesNotMatch(html, /data-iui-fallback|解析失败/)
 })
