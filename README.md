@@ -16,7 +16,7 @@ visual language. Plain text stays plain text.
 
 [中文说明](README.zh-CN.md) · [Docs index](docs/README.md) · [Component reference](docs/COMPONENTS.md) · [Design system](docs/design.md) · [Architecture](docs/ARCHITECTURE.md) · [Gallery (GitHub Pages)](https://markyangkp.github.io/dsh-intelligence-ui/gallery.html) · [Light](docs/gallery.png) / [dark](docs/gallery-dark.png) / [mobile](docs/gallery-mobile.png)
 
-**Status:** v1.1.2 · 44 components · MIT · light/dark themes · 390/920px · macOS tested locally, Linux covered by CI.
+**Status:** v1.2.0 · 44 components · MIT · light/dark themes · 390/920px · macOS tested locally, Linux covered by CI.
 
 > The gallery page is served by GitHub Pages once enabled in the repository settings (see
 > [RELEASING.md](RELEASING.md)); the PNG links work immediately.
@@ -77,6 +77,9 @@ note = Callout("Takeaway", "Revenue grew three weeks in a row; shift budget towa
   keeps the same component instances.
 - **Compact by default** — charts, maps, tables and long code render compact with an in-place
   expand control.
+- **Reusable runtime** — other client plugins can consume `renderOpenUI`, `OpenUICard` and
+  `evaluateProgram` through `dsh.client.external`, so their panels share these components instead of
+  copying the runtime (see [Public client API](docs/ARCHITECTURE.md)).
 - **Prompt architecture** — the host injects an adaptive presentation policy plus a capability
   reference, so the model knows _when_ and _how_ to use the UI.
 
@@ -110,7 +113,7 @@ Five minutes from zero to a rendered reply:
    a plugin bundle (choose the install-from-directory / bundle option and point it at the repository
    root). Menu labels vary slightly between DSH versions.
 4. **Restart DSH** and open a chat. The browser console should show
-   `[dsh-intelligence-ui/1.1.2]`.
+   `[dsh-intelligence-ui/1.2.0]`.
 5. **Paste the example below** into a message (as-is, no extra prompt needed) and send it.
 
 If step 3 is unavailable in your DSH build, that build does not expose plugin bundles and cannot

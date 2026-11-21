@@ -6,6 +6,18 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-11-21
+
+### Added
+
+- **Public client API** so other client plugins can reuse this runtime instead of copying it. A
+  consumer declares `dsh.client.external: ["dsh-intelligence-ui"]` and gets `renderOpenUI(code)` —
+  an OpenUI program rendered to a React element, wrapped in an error boundary so a bad program
+  degrades to a local notice instead of replacing the host panel — plus `OpenUICard` (the same card
+  with explicit `streaming` / `evaluation` control) and `evaluateProgram(code)` (parse to
+  `{ root, errors }` without rendering). Documented in `docs/ARCHITECTURE.md`, pinned by
+  `test/public-api-test.mjs`; the exports are additive, so existing behaviour is unchanged.
+
 ### Fixed
 
 - A reply whose UI block called `Row([children], "row", 12)` (or `Col` with `"column"`) rendered a

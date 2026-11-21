@@ -20,8 +20,28 @@ import { OpenUICard, evaluateProgram } from './openui-runtime.jsx'
 import { compileReply } from './compiler.mjs'
 import { RenderBoundary, FallbackNotice } from './render-safety.jsx'
 
+// ---------- 公开运行时出口（供其他客户端插件复用） ----------
+// 其他插件在自己的 package.json 里声明 `dsh.client.external: ["dsh-intelligence-ui"]`，
+// 即可 require('dsh-intelligence-ui') 取得 OpenUI 渲染能力，把面板内容画成本插件同一套
+// 组件与视觉语言，而不是各自复制一份运行时（见 docs/ARCHITECTURE.md「Public client API」）。
+export { OpenUICard, evaluateProgram }
+
+/**
+ * 把一段 OpenUI 程序文本渲染成组件树，供其他插件的界面复用。
+ * 渲染失败在内部兜底，调用方不会因为一个坏程序整块面板崩掉。
+ * @param {string} code — `root = Stack([...])` 形式的 OpenUI 源码。
+ * @returns {import('react').ReactElement} 可直接放进任意 React 树的元素（不含流式语义）。
+ */
+export function renderOpenUI(code) {
+  return (
+    <RenderBoundary resetKey={code}>
+      <OpenUICard code={code} streaming={false} />
+    </RenderBoundary>
+  )
+}
+
 /** 插件版本标记（排障用：页面控制台应打印本行）。 */
-export const IUI_VERSION = 'dsh-intelligence-ui/1.1.2'
+export const IUI_VERSION = 'dsh-intelligence-ui/1.2.0'
 
 /** 自动编译开关：localStorage['dsh-intelligence-ui:disable-auto']='1' 可紧急关闭。 */
 function autoCompileEnabled() {

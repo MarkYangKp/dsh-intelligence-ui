@@ -69,6 +69,27 @@ fingerprint) and owns the tolerant binding layer:
 - unknown enum synonyms (`column`, `smooth`, `danger`, `small`, …) are mapped;
 - resource budgets bound source size, nesting depth, reference expansion and data volume.
 
+## Public client API
+
+Other client plugins can reuse this runtime instead of shipping a copy of it. The consumer declares
+the dependency in its own `package.json`:
+
+```json
+{ "dsh": { "client": { "external": ["dsh-intelligence-ui"] } } }
+```
+
+then `require('dsh-intelligence-ui')` and use one of these exports:
+
+| Export                  | Kind      | Purpose                                                                                                                                                                                  |
+| ----------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `renderOpenUI(code)`    | function  | Renders an OpenUI program (`root = Stack([...])`) to a React element. Renders inside an error boundary, so a bad program degrades to a local notice instead of replacing the host panel. |
+| `OpenUICard`            | component | The same card with explicit control (`code`, `streaming`, `evaluation`, `pendingFallback`).                                                                                              |
+| `evaluateProgram(code)` | function  | Parses and evaluates a program to `{ root, errors }` without rendering, for pre-flight checks or diagnostics.                                                                            |
+
+The surface is additive and pinned by `test/public-api-test.mjs`. Renaming or removing an export
+breaks installed consumers at runtime rather than at build time, so treat it as public API: add
+fields, do not repurpose existing ones.
+
 ## Robustness model
 
 Four isolation layers, from outside in:

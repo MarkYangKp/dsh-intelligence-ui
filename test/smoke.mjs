@@ -109,6 +109,7 @@ const render = (text, status = 'settled') =>
   )
 
 await import('./closing-reply-test.mjs')
+await import('./public-api-test.mjs')
 
 // ① 原生围栏
 const fenceText =
