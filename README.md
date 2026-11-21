@@ -263,7 +263,8 @@ minimal and language-neutral; number and date formatting comes from the content.
 - Auto-compilation only recognises clear structures; prose numbers are not turned into charts.
 - The tolerance layer fixes syntax, not semantics: swapped values cannot be detected.
 - Rendering depends on host internals (renderer slot, theme tokens, platform module table); a host
-  upgrade may require plugin changes.
+  upgrade may require plugin changes. Closing replies remain visible when the optional file-mention
+  provider is unavailable or fails; only file-mention enhancements are omitted.
 
 ## Documentation
 

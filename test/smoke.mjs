@@ -108,6 +108,8 @@ const render = (text, status = 'settled') =>
     })
   )
 
+await import('./closing-reply-test.mjs')
+
 // ① 原生围栏
 const fenceText =
   '本周经营情况：\n\n```openui\nroot = Stack([kpis, chart], "column", 12)\nkpis = Stack([k1, k2], "row", 12)\nk1 = StatCard("本周收入", "¥84,300", "+12.6%", "up")\nk2 = StatCard("新增用户", "1,204", "+3.1%", "up")\nchart = Chart("日收入趋势", "bar", [{label: "一", value: 1120}, {label: "二", value: 1310}, {label: "三", value: 980}])\n```\n\n数据说明见上表。'
