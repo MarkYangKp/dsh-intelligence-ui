@@ -2,7 +2,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { flushSync } from 'react-dom'
-import { IntelligenceAssistantNodeView } from '../../src/client.jsx'
+import { apply, IntelligenceAssistantNodeView } from '../../src/client.jsx'
 import { OpenUICard, library } from '../../src/openui-runtime.jsx'
 
 const checks = []
@@ -40,6 +40,54 @@ async function run() {
   // Finish its initialization before measuring resources owned by this lifecycle.
   for (let i = 0; i < 100 && !window.__bundleReady; i++) await wait()
   if (!window.__bundleReady) throw new Error('bundle smoke did not initialize')
+  const registrations = []
+  let mentionService
+  apply({
+    effect: (fn) => fn(),
+    get: () => mentionService,
+    slots: {
+      inject: (_name, fn) => fn(),
+      register: (options, component) => registrations.push({ options, component })
+    }
+  })
+  const registration = registrations.find(({ options }) => options.key === 'assistant-step')
+  const injected = registration.options.inject('session-fixture')
+  const finalProps = props('Closing reply stays visible.', 'running')
+  delete finalProps.fileMentions
+  finalProps.node.location.turn.status = 'running'
+  render(<IntelligenceAssistantNodeView {...finalProps} {...injected} />)
+  check('注册入口流式正文可见', host.textContent.includes('Closing reply stays visible.'))
+  finalProps.node = {
+    data: { ...finalProps.node.data, status: 'settled', finalNode: { seq: 7 } },
+    location: { kind: 'step', turn: { status: 'closed' } }
+  }
+  finalProps.useTurnData = () => ({ closing: { finalNode: { seq: 7 } } })
+  render(<IntelligenceAssistantNodeView {...finalProps} {...injected} />)
+  check(
+    '同一组件流式结束后仍显示正文',
+    host.textContent.includes('Closing reply stays visible.') &&
+      !host.querySelector('[data-iui-fallback]')
+  )
+  mentionService = {
+    forClosing: () => {
+      throw new Error('synthetic mention failure')
+    }
+  }
+  finalProps.node = { ...finalProps.node, data: { ...finalProps.node.data } }
+  finalProps.node.location = { kind: 'step', turn: { status: 'closed' } }
+  render(<IntelligenceAssistantNodeView {...finalProps} {...injected} />)
+  check(
+    '文件引用服务异常不替换整条回复',
+    host.textContent.includes('Closing reply stays visible.') &&
+      !host.querySelector('[data-iui-fallback]')
+  )
+  render(<IntelligenceAssistantNodeView {...finalProps} fileMentions={undefined} />)
+  check(
+    '缺少注入时完成回复仍可见',
+    host.textContent.includes('Closing reply stays visible.') &&
+      !host.querySelector('[data-iui-fallback]')
+  )
+
   for (const name of ['Chart', 'Map', 'Diagram', 'TreeView']) {
     const original = library.components[name].component
     library.components[name].component = () => {

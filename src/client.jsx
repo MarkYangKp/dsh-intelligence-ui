@@ -574,10 +574,16 @@ const AssistantNodeContent = memo(function AssistantNodeContent({
     if (tail?.closing?.finalNode.seq !== data.finalNode.seq) return undefined
     return { turn, seq: data.finalNode.seq, openFile }
   }, [data.finalNode, openFile, tail, turn])
-  const mentions = useMemo(
-    () => (owner === undefined ? undefined : fileMentions(owner)),
-    [fileMentions, owner]
-  )
+  const mentions = useMemo(() => {
+    if (owner === undefined || typeof fileMentions !== 'function') return undefined
+    try {
+      return fileMentions(owner)
+    } catch {
+      // File links are an optional enhancement, never a prerequisite for the reply.
+      console.warn('[dsh-intelligence-ui] file mentions unavailable; rendering reply without them')
+      return undefined
+    }
+  }, [fileMentions, owner])
   const labels = useMemo(() => markdownLabels(t), [t])
   const pathImages = useMemo(
     () => ({
@@ -815,7 +821,12 @@ export function apply(ctx) {
           key: 'assistant-step',
           locale: 'chat',
           priority: -20,
-          inject: () => ({ hooks: { presentation: presentationStore } })
+          // Replacement entries do not inherit the default renderer's injected services.
+          inject: (sessionId) => ({
+            hooks: { presentation: presentationStore },
+            fileMentions: (owner, getFileTriggerProps) =>
+              ctx.get('chatFileMentions')?.forClosing(owner, sessionId, getFileTriggerProps)
+          })
         },
         IntelligenceAssistantNodeView
       )

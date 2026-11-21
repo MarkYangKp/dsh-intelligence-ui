@@ -6,6 +6,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Completed replies no longer fall back to "此内容暂时无法显示" when the closing Turn resolves file
+  mentions. The replacement renderer now injects its own session-bound optional file-mention
+  service instead of assuming it inherits the host renderer's injection. Missing or throwing
+  providers degrade to the reply without file-mention enhancements.
+- Added registration-level and React DOM regressions for closing replies and the streaming-to-settled
+  transition, including absent and failing file-mention providers.
+
 ## [1.1.1] — 2026-11-05
 
 ### Fixed

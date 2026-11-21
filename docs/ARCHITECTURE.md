@@ -138,6 +138,10 @@ bounded accent-hue count. Counts and commands are in [CONTRIBUTING.md](../CONTRI
 
 - Client: browser platform modules provided by DSH (React — host-provided; the repository's test
   dependencies build against React 19, slots, primitives, store).
+- Replacement renderer entries do not inherit the default entry's injected services. The
+  `assistant-step` registration explicitly binds the optional `chatFileMentions.forClosing`
+  provider to the viewed session. Missing or throwing providers must not hide the closing reply;
+  only the file-mention enhancement is omitted. Registration and browser lifecycle tests cover this.
 - Host: plain ESM, no build.
 - Node for building/tests: `>= 20`.
 - Committed build artifact: `lib/client.js` (DSH installs the plugin directory as a bundle, so the
